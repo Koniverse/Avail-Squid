@@ -1,737 +1,14 @@
 import {sts, Result, Option, Bytes, BitSequence} from './support'
 
-export interface RegistrarInfo {
-    account: AccountId32
-    fee: bigint
-    fields: BitFlags
-}
-
-export type BitFlags = bigint
-
-export const RegistrarInfo: sts.Type<RegistrarInfo> = sts.struct(() => {
-    return  {
-        account: AccountId32,
-        fee: sts.bigint(),
-        fields: BitFlags,
-    }
-})
-
-export const BitFlags = sts.bigint()
-
-export type Data = Data_BlakeTwo256 | Data_Keccak256 | Data_None | Data_Raw0 | Data_Raw1 | Data_Raw10 | Data_Raw11 | Data_Raw12 | Data_Raw13 | Data_Raw14 | Data_Raw15 | Data_Raw16 | Data_Raw17 | Data_Raw18 | Data_Raw19 | Data_Raw2 | Data_Raw20 | Data_Raw21 | Data_Raw22 | Data_Raw23 | Data_Raw24 | Data_Raw25 | Data_Raw26 | Data_Raw27 | Data_Raw28 | Data_Raw29 | Data_Raw3 | Data_Raw30 | Data_Raw31 | Data_Raw32 | Data_Raw4 | Data_Raw5 | Data_Raw6 | Data_Raw7 | Data_Raw8 | Data_Raw9 | Data_Sha256 | Data_ShaThree256
-
-export interface Data_BlakeTwo256 {
-    __kind: 'BlakeTwo256'
-    value: Bytes
-}
-
-export interface Data_Keccak256 {
-    __kind: 'Keccak256'
-    value: Bytes
-}
-
-export interface Data_None {
-    __kind: 'None'
-}
-
-export interface Data_Raw0 {
-    __kind: 'Raw0'
-    value: Bytes
-}
-
-export interface Data_Raw1 {
-    __kind: 'Raw1'
-    value: Bytes
-}
-
-export interface Data_Raw10 {
-    __kind: 'Raw10'
-    value: Bytes
-}
-
-export interface Data_Raw11 {
-    __kind: 'Raw11'
-    value: Bytes
-}
-
-export interface Data_Raw12 {
-    __kind: 'Raw12'
-    value: Bytes
-}
-
-export interface Data_Raw13 {
-    __kind: 'Raw13'
-    value: Bytes
-}
-
-export interface Data_Raw14 {
-    __kind: 'Raw14'
-    value: Bytes
-}
-
-export interface Data_Raw15 {
-    __kind: 'Raw15'
-    value: Bytes
-}
-
-export interface Data_Raw16 {
-    __kind: 'Raw16'
-    value: Bytes
-}
-
-export interface Data_Raw17 {
-    __kind: 'Raw17'
-    value: Bytes
-}
-
-export interface Data_Raw18 {
-    __kind: 'Raw18'
-    value: Bytes
-}
-
-export interface Data_Raw19 {
-    __kind: 'Raw19'
-    value: Bytes
-}
-
-export interface Data_Raw2 {
-    __kind: 'Raw2'
-    value: Bytes
-}
-
-export interface Data_Raw20 {
-    __kind: 'Raw20'
-    value: Bytes
-}
-
-export interface Data_Raw21 {
-    __kind: 'Raw21'
-    value: Bytes
-}
-
-export interface Data_Raw22 {
-    __kind: 'Raw22'
-    value: Bytes
-}
-
-export interface Data_Raw23 {
-    __kind: 'Raw23'
-    value: Bytes
-}
-
-export interface Data_Raw24 {
-    __kind: 'Raw24'
-    value: Bytes
-}
-
-export interface Data_Raw25 {
-    __kind: 'Raw25'
-    value: Bytes
-}
-
-export interface Data_Raw26 {
-    __kind: 'Raw26'
-    value: Bytes
-}
-
-export interface Data_Raw27 {
-    __kind: 'Raw27'
-    value: Bytes
-}
-
-export interface Data_Raw28 {
-    __kind: 'Raw28'
-    value: Bytes
-}
-
-export interface Data_Raw29 {
-    __kind: 'Raw29'
-    value: Bytes
-}
-
-export interface Data_Raw3 {
-    __kind: 'Raw3'
-    value: Bytes
-}
-
-export interface Data_Raw30 {
-    __kind: 'Raw30'
-    value: Bytes
-}
-
-export interface Data_Raw31 {
-    __kind: 'Raw31'
-    value: Bytes
-}
-
-export interface Data_Raw32 {
-    __kind: 'Raw32'
-    value: Bytes
-}
-
-export interface Data_Raw4 {
-    __kind: 'Raw4'
-    value: Bytes
-}
-
-export interface Data_Raw5 {
-    __kind: 'Raw5'
-    value: Bytes
-}
-
-export interface Data_Raw6 {
-    __kind: 'Raw6'
-    value: Bytes
-}
-
-export interface Data_Raw7 {
-    __kind: 'Raw7'
-    value: Bytes
-}
-
-export interface Data_Raw8 {
-    __kind: 'Raw8'
-    value: Bytes
-}
-
-export interface Data_Raw9 {
-    __kind: 'Raw9'
-    value: Bytes
-}
-
-export interface Data_Sha256 {
-    __kind: 'Sha256'
-    value: Bytes
-}
-
-export interface Data_ShaThree256 {
-    __kind: 'ShaThree256'
-    value: Bytes
-}
-
-export const Data: sts.Type<Data> = sts.closedEnum(() => {
-    return  {
-        BlakeTwo256: sts.bytes(),
-        Keccak256: sts.bytes(),
-        None: sts.unit(),
-        Raw0: sts.bytes(),
-        Raw1: sts.bytes(),
-        Raw10: sts.bytes(),
-        Raw11: sts.bytes(),
-        Raw12: sts.bytes(),
-        Raw13: sts.bytes(),
-        Raw14: sts.bytes(),
-        Raw15: sts.bytes(),
-        Raw16: sts.bytes(),
-        Raw17: sts.bytes(),
-        Raw18: sts.bytes(),
-        Raw19: sts.bytes(),
-        Raw2: sts.bytes(),
-        Raw20: sts.bytes(),
-        Raw21: sts.bytes(),
-        Raw22: sts.bytes(),
-        Raw23: sts.bytes(),
-        Raw24: sts.bytes(),
-        Raw25: sts.bytes(),
-        Raw26: sts.bytes(),
-        Raw27: sts.bytes(),
-        Raw28: sts.bytes(),
-        Raw29: sts.bytes(),
-        Raw3: sts.bytes(),
-        Raw30: sts.bytes(),
-        Raw31: sts.bytes(),
-        Raw32: sts.bytes(),
-        Raw4: sts.bytes(),
-        Raw5: sts.bytes(),
-        Raw6: sts.bytes(),
-        Raw7: sts.bytes(),
-        Raw8: sts.bytes(),
-        Raw9: sts.bytes(),
-        Sha256: sts.bytes(),
-        ShaThree256: sts.bytes(),
-    }
-})
-
-export interface Registration {
-    judgements: [number, Judgement][]
-    deposit: bigint
-    info: IdentityInfo
-}
-
-export interface IdentityInfo {
-    additional: [Data, Data][]
-    display: Data
-    legal: Data
-    web: Data
-    riot: Data
-    email: Data
-    pgpFingerprint?: (Bytes | undefined)
-    image: Data
-    twitter: Data
-}
-
-export type Judgement = Judgement_Erroneous | Judgement_FeePaid | Judgement_KnownGood | Judgement_LowQuality | Judgement_OutOfDate | Judgement_Reasonable | Judgement_Unknown
-
-export interface Judgement_Erroneous {
-    __kind: 'Erroneous'
-}
-
-export interface Judgement_FeePaid {
-    __kind: 'FeePaid'
-    value: bigint
-}
-
-export interface Judgement_KnownGood {
-    __kind: 'KnownGood'
-}
-
-export interface Judgement_LowQuality {
-    __kind: 'LowQuality'
-}
-
-export interface Judgement_OutOfDate {
-    __kind: 'OutOfDate'
-}
-
-export interface Judgement_Reasonable {
-    __kind: 'Reasonable'
-}
-
-export interface Judgement_Unknown {
-    __kind: 'Unknown'
-}
-
-export const Registration: sts.Type<Registration> = sts.struct(() => {
-    return  {
-        judgements: sts.array(() => sts.tuple(() => [sts.number(), Judgement])),
-        deposit: sts.bigint(),
-        info: IdentityInfo,
-    }
-})
-
-export const IdentityInfo: sts.Type<IdentityInfo> = sts.struct(() => {
-    return  {
-        additional: sts.array(() => sts.tuple(() => [Data, Data])),
-        display: Data,
-        legal: Data,
-        web: Data,
-        riot: Data,
-        email: Data,
-        pgpFingerprint: sts.option(() => sts.bytes()),
-        image: Data,
-        twitter: Data,
-    }
-})
-
-export const Judgement: sts.Type<Judgement> = sts.closedEnum(() => {
-    return  {
-        Erroneous: sts.unit(),
-        FeePaid: sts.bigint(),
-        KnownGood: sts.unit(),
-        LowQuality: sts.unit(),
-        OutOfDate: sts.unit(),
-        Reasonable: sts.unit(),
-        Unknown: sts.unit(),
-    }
-})
-
-export type Percent = number
-
-export const Percent = sts.number()
-
-export interface SpanRecord {
-    slashed: bigint
-    paidOut: bigint
-}
-
-export const SpanRecord: sts.Type<SpanRecord> = sts.struct(() => {
-    return  {
-        slashed: sts.bigint(),
-        paidOut: sts.bigint(),
-    }
-})
-
-export interface SlashingSpans {
-    spanIndex: number
-    lastStart: number
-    lastNonzeroSlash: number
-    prior: number[]
-}
-
-export const SlashingSpans: sts.Type<SlashingSpans> = sts.struct(() => {
-    return  {
-        spanIndex: sts.number(),
-        lastStart: sts.number(),
-        lastNonzeroSlash: sts.number(),
-        prior: sts.array(() => sts.number()),
-    }
-})
-
-export interface UnappliedSlash {
-    validator: AccountId32
-    own: bigint
-    others: [AccountId32, bigint][]
-    reporters: AccountId32[]
-    payout: bigint
-}
-
-export const UnappliedSlash: sts.Type<UnappliedSlash> = sts.struct(() => {
-    return  {
-        validator: AccountId32,
-        own: sts.bigint(),
-        others: sts.array(() => sts.tuple(() => [AccountId32, sts.bigint()])),
-        reporters: sts.array(() => AccountId32),
-        payout: sts.bigint(),
-    }
-})
-
-export type Forcing = Forcing_ForceAlways | Forcing_ForceNew | Forcing_ForceNone | Forcing_NotForcing
-
-export interface Forcing_ForceAlways {
-    __kind: 'ForceAlways'
-}
-
-export interface Forcing_ForceNew {
-    __kind: 'ForceNew'
-}
-
-export interface Forcing_ForceNone {
-    __kind: 'ForceNone'
-}
-
-export interface Forcing_NotForcing {
-    __kind: 'NotForcing'
-}
-
-export const Forcing: sts.Type<Forcing> = sts.closedEnum(() => {
-    return  {
-        ForceAlways: sts.unit(),
-        ForceNew: sts.unit(),
-        ForceNone: sts.unit(),
-        NotForcing: sts.unit(),
-    }
-})
-
-export interface EraRewardPoints {
-    total: number
-    individual: [AccountId32, number][]
-}
-
-export const EraRewardPoints: sts.Type<EraRewardPoints> = sts.struct(() => {
-    return  {
-        total: sts.number(),
-        individual: sts.array(() => sts.tuple(() => [AccountId32, sts.number()])),
-    }
-})
-
-export interface Exposure {
-    total: bigint
-    own: bigint
-    others: IndividualExposure[]
-}
-
-export interface IndividualExposure {
-    who: AccountId32
-    value: bigint
-}
-
-export const Exposure: sts.Type<Exposure> = sts.struct(() => {
-    return  {
-        total: sts.bigint(),
-        own: sts.bigint(),
-        others: sts.array(() => IndividualExposure),
-    }
-})
-
-export const IndividualExposure: sts.Type<IndividualExposure> = sts.struct(() => {
-    return  {
-        who: AccountId32,
-        value: sts.bigint(),
-    }
-})
-
-export interface ActiveEraInfo {
-    index: number
-    start?: (bigint | undefined)
-}
-
-export const ActiveEraInfo: sts.Type<ActiveEraInfo> = sts.struct(() => {
-    return  {
-        index: sts.number(),
-        start: sts.option(() => sts.bigint()),
-    }
-})
-
-export interface Nominations {
-    targets: AccountId32[]
-    submittedIn: number
-    suppressed: boolean
-}
-
-export const Nominations: sts.Type<Nominations> = sts.struct(() => {
-    return  {
-        targets: sts.array(() => AccountId32),
-        submittedIn: sts.number(),
-        suppressed: sts.boolean(),
-    }
-})
-
-export interface ValidatorPrefs {
-    commission: number
-    blocked: boolean
-}
-
-export const ValidatorPrefs: sts.Type<ValidatorPrefs> = sts.struct(() => {
-    return  {
-        commission: sts.number(),
-        blocked: sts.boolean(),
-    }
-})
-
-export type RewardDestination = RewardDestination_Account | RewardDestination_Controller | RewardDestination_None | RewardDestination_Staked | RewardDestination_Stash
-
-export interface RewardDestination_Account {
-    __kind: 'Account'
-    value: AccountId32
-}
-
-export interface RewardDestination_Controller {
-    __kind: 'Controller'
-}
-
-export interface RewardDestination_None {
-    __kind: 'None'
-}
-
-export interface RewardDestination_Staked {
-    __kind: 'Staked'
-}
-
-export interface RewardDestination_Stash {
-    __kind: 'Stash'
-}
-
-export const RewardDestination: sts.Type<RewardDestination> = sts.closedEnum(() => {
-    return  {
-        Account: AccountId32,
-        Controller: sts.unit(),
-        None: sts.unit(),
-        Staked: sts.unit(),
-        Stash: sts.unit(),
-    }
-})
-
-export interface StakingLedger {
-    stash: AccountId32
-    total: bigint
-    active: bigint
-    unlocking: UnlockChunk[]
-    claimedRewards: number[]
-}
-
-export interface UnlockChunk {
-    value: bigint
-    era: number
-}
-
-export const StakingLedger: sts.Type<StakingLedger> = sts.struct(() => {
-    return  {
-        stash: AccountId32,
-        total: sts.bigint(),
-        active: sts.bigint(),
-        unlocking: sts.array(() => UnlockChunk),
-        claimedRewards: sts.array(() => sts.number()),
-    }
-})
-
-export const UnlockChunk: sts.Type<UnlockChunk> = sts.struct(() => {
-    return  {
-        value: sts.bigint(),
-        era: sts.number(),
-    }
-})
-
-export type Perbill = number
-
-export const Perbill = sts.number()
-
-export interface Type_342 {
-    amount: bigint
-}
-
-export const Type_342: sts.Type<Type_342> = sts.struct(() => {
-    return  {
-        amount: sts.bigint(),
-    }
-})
-
-export interface IdAmount {
-    id: RuntimeHoldReason
-    amount: bigint
-}
-
-export type RuntimeHoldReason = never
-
-export const IdAmount: sts.Type<IdAmount> = sts.struct(() => {
-    return  {
-        id: RuntimeHoldReason,
-        amount: sts.bigint(),
-    }
-})
-
-export const RuntimeHoldReason: sts.Type<RuntimeHoldReason> = sts.closedEnum(() => {
-    return  {
-    }
-})
-
-export interface ReserveData {
-    id: Bytes
-    amount: bigint
-}
-
-export const ReserveData: sts.Type<ReserveData> = sts.struct(() => {
-    return  {
-        id: sts.bytes(),
-        amount: sts.bigint(),
-    }
-})
-
-export interface BalanceLock {
-    id: Bytes
-    amount: bigint
-    reasons: Reasons
-}
-
-export type Reasons = Reasons_All | Reasons_Fee | Reasons_Misc
-
-export interface Reasons_All {
-    __kind: 'All'
-}
-
-export interface Reasons_Fee {
-    __kind: 'Fee'
-}
-
-export interface Reasons_Misc {
-    __kind: 'Misc'
-}
-
-export const BalanceLock: sts.Type<BalanceLock> = sts.struct(() => {
-    return  {
-        id: sts.bytes(),
-        amount: sts.bigint(),
-        reasons: Reasons,
-    }
-})
-
-export const Reasons: sts.Type<Reasons> = sts.closedEnum(() => {
-    return  {
-        All: sts.unit(),
-        Fee: sts.unit(),
-        Misc: sts.unit(),
-    }
-})
-
-export interface AccountData {
-    free: bigint
-    reserved: bigint
-    frozen: bigint
-    flags: ExtraFlags
-}
-
-export type ExtraFlags = bigint
-
-export const AccountData: sts.Type<AccountData> = sts.struct(() => {
-    return  {
-        free: sts.bigint(),
-        reserved: sts.bigint(),
-        frozen: sts.bigint(),
-        flags: ExtraFlags,
-    }
-})
-
-export const ExtraFlags = sts.bigint()
-
-export interface BlockLength {
-    max: Type_104
-    cols: BlockLengthColumns
-    rows: BlockLengthRows
-    chunkSize: number
-}
-
-export type BlockLengthRows = number
-
-export type BlockLengthColumns = number
-
-export interface Type_104 {
-    normal: number
-    operational: number
-    mandatory: number
-}
-
-export const BlockLength: sts.Type<BlockLength> = sts.struct(() => {
-    return  {
-        max: Type_104,
-        cols: BlockLengthColumns,
-        rows: BlockLengthRows,
-        chunkSize: sts.number(),
-    }
-})
-
-export const BlockLengthRows = sts.number()
-
-export const BlockLengthColumns = sts.number()
-
-export const Type_104: sts.Type<Type_104> = sts.struct(() => {
-    return  {
-        normal: sts.number(),
-        operational: sts.number(),
-        mandatory: sts.number(),
-    }
-})
-
-export type Type_98 = Type_98_ApplyExtrinsic | Type_98_Finalization | Type_98_Initialization
-
-export interface Type_98_ApplyExtrinsic {
-    __kind: 'ApplyExtrinsic'
-    value: number
-}
-
-export interface Type_98_Finalization {
-    __kind: 'Finalization'
-}
-
-export interface Type_98_Initialization {
-    __kind: 'Initialization'
-}
-
-export const Type_98: sts.Type<Type_98> = sts.closedEnum(() => {
-    return  {
-        ApplyExtrinsic: sts.number(),
-        Finalization: sts.unit(),
-        Initialization: sts.unit(),
-    }
-})
-
-export interface LastRuntimeUpgradeInfo {
-    specVersion: number
-    specName: string
-}
-
-export const LastRuntimeUpgradeInfo: sts.Type<LastRuntimeUpgradeInfo> = sts.struct(() => {
-    return  {
-        specVersion: sts.number(),
-        specName: sts.string(),
-    }
-})
-
 export interface EventRecord {
-    phase: Type_98
+    phase: Type_105
     event: Event
     topics: H256[]
 }
 
-export type Event = Event_Balances | Event_Bounties | Event_DataAvailability | Event_ElectionProviderMultiPhase | Event_Grandpa | Event_Identity | Event_ImOnline | Event_Indices | Event_Mandate | Event_Multisig | Event_NomadDABridge | Event_NomadHome | Event_NomadUpdaterManager | Event_NominationPools | Event_Offences | Event_Preimage | Event_Scheduler | Event_Session | Event_Staking | Event_Sudo | Event_System | Event_TechnicalCommittee | Event_TechnicalMembership | Event_Tips | Event_TransactionPayment | Event_Treasury | Event_Utility | Event_VoterList
+export type H256 = Bytes
+
+export type Event = Event_Balances | Event_Bounties | Event_DataAvailability | Event_ElectionProviderMultiPhase | Event_Grandpa | Event_Identity | Event_ImOnline | Event_Indices | Event_Mandate | Event_Multisig | Event_NomadDABridge | Event_NomadHome | Event_NomadUpdaterManager | Event_NominationPools | Event_Offences | Event_Preimage | Event_Proxy | Event_Scheduler | Event_Session | Event_Staking | Event_Succinct | Event_Sudo | Event_System | Event_TechnicalCommittee | Event_TechnicalMembership | Event_Tips | Event_TransactionPayment | Event_Treasury | Event_Utility | Event_VoterList
 
 export interface Event_Balances {
     __kind: 'Balances'
@@ -813,6 +90,11 @@ export interface Event_Preimage {
     value: PreimageEvent
 }
 
+export interface Event_Proxy {
+    __kind: 'Proxy'
+    value: ProxyEvent
+}
+
 export interface Event_Scheduler {
     __kind: 'Scheduler'
     value: SchedulerEvent
@@ -826,6 +108,11 @@ export interface Event_Session {
 export interface Event_Staking {
     __kind: 'Staking'
     value: StakingEvent
+}
+
+export interface Event_Succinct {
+    __kind: 'Succinct'
+    value: SuccinctEvent
 }
 
 export interface Event_Sudo {
@@ -896,6 +183,8 @@ export interface VoterListEvent_ScoreUpdated {
     who: AccountId32
     newScore: bigint
 }
+
+export type AccountId32 = Bytes
 
 /**
  * The `Event` enum of this pallet
@@ -1480,6 +769,97 @@ export interface SudoEvent_SudoAsDone {
 /**
  * The `Event` enum of this pallet
  */
+export type SuccinctEvent = SuccinctEvent_BroadcasterUpdate | SuccinctEvent_ConfigurationUpdated | SuccinctEvent_ExecutedMessage | SuccinctEvent_HeaderUpdate | SuccinctEvent_MessageSubmitted | SuccinctEvent_SourceChainFrozen | SuccinctEvent_SyncCommitteeUpdate | SuccinctEvent_WhitelistedDomainsUpdated
+
+/**
+ * emit when new updater is set
+ */
+export interface SuccinctEvent_BroadcasterUpdate {
+    __kind: 'BroadcasterUpdate'
+    old: H256
+    new: H256
+    domain: number
+}
+
+/**
+ * Configuration was updated.
+ */
+export interface SuccinctEvent_ConfigurationUpdated {
+    __kind: 'ConfigurationUpdated'
+    slotsPerPeriod: bigint
+    finalityThreshold: number
+}
+
+/**
+ * emit when message gets executed.
+ */
+export interface SuccinctEvent_ExecutedMessage {
+    __kind: 'ExecutedMessage'
+    from: H256
+    to: H256
+    messageId: bigint
+    messageRoot: H256
+}
+
+/**
+ * emit event once the head is updated.
+ */
+export interface SuccinctEvent_HeaderUpdate {
+    __kind: 'HeaderUpdate'
+    slot: bigint
+    finalizationRoot: H256
+    executionStateRoot: H256
+}
+
+/**
+ * emit when message is submitted.
+ */
+export interface SuccinctEvent_MessageSubmitted {
+    __kind: 'MessageSubmitted'
+    from: AccountId32
+    to: H256
+    messageType: MessageType
+    destinationDomain: number
+}
+
+/**
+ * emit if source chain gets frozen.
+ */
+export interface SuccinctEvent_SourceChainFrozen {
+    __kind: 'SourceChainFrozen'
+    sourceChainId: number
+    frozen: boolean
+}
+
+/**
+ * emit event once the sync committee updates.
+ */
+export interface SuccinctEvent_SyncCommitteeUpdate {
+    __kind: 'SyncCommitteeUpdate'
+    period: bigint
+    root: bigint
+}
+
+/**
+ * Whitelisted domains were updated.
+ */
+export interface SuccinctEvent_WhitelistedDomainsUpdated {
+    __kind: 'WhitelistedDomainsUpdated'
+}
+
+export type MessageType = MessageType_ArbitraryMessage | MessageType_FungibleToken
+
+export interface MessageType_ArbitraryMessage {
+    __kind: 'ArbitraryMessage'
+}
+
+export interface MessageType_FungibleToken {
+    __kind: 'FungibleToken'
+}
+
+/**
+ * The `Event` enum of this pallet
+ */
 export type StakingEvent = StakingEvent_Bonded | StakingEvent_Chilled | StakingEvent_EraPaid | StakingEvent_ForceEra | StakingEvent_Kicked | StakingEvent_OldSlashingReportDiscarded | StakingEvent_PayoutStarted | StakingEvent_Rewarded | StakingEvent_SlashReported | StakingEvent_Slashed | StakingEvent_StakersElected | StakingEvent_StakingElectionFailed | StakingEvent_Unbonded | StakingEvent_ValidatorPrefsSet | StakingEvent_Withdrawn
 
 /**
@@ -1619,6 +999,31 @@ export interface StakingEvent_Withdrawn {
     amount: bigint
 }
 
+export interface ValidatorPrefs {
+    commission: number
+    blocked: boolean
+}
+
+export type Perbill = number
+
+export type Forcing = Forcing_ForceAlways | Forcing_ForceNew | Forcing_ForceNone | Forcing_NotForcing
+
+export interface Forcing_ForceAlways {
+    __kind: 'ForceAlways'
+}
+
+export interface Forcing_ForceNew {
+    __kind: 'ForceNew'
+}
+
+export interface Forcing_ForceNone {
+    __kind: 'ForceNone'
+}
+
+export interface Forcing_NotForcing {
+    __kind: 'NotForcing'
+}
+
 /**
  * The `Event` enum of this pallet
  */
@@ -1691,6 +1096,81 @@ export interface SchedulerEvent_Scheduled {
     __kind: 'Scheduled'
     when: number
     index: number
+}
+
+/**
+ * The `Event` enum of this pallet
+ */
+export type ProxyEvent = ProxyEvent_Announced | ProxyEvent_ProxyAdded | ProxyEvent_ProxyExecuted | ProxyEvent_ProxyRemoved | ProxyEvent_PureCreated
+
+/**
+ * An announcement was placed to make a call in the future.
+ */
+export interface ProxyEvent_Announced {
+    __kind: 'Announced'
+    real: AccountId32
+    proxy: AccountId32
+    callHash: H256
+}
+
+/**
+ * A proxy was added.
+ */
+export interface ProxyEvent_ProxyAdded {
+    __kind: 'ProxyAdded'
+    delegator: AccountId32
+    delegatee: AccountId32
+    proxyType: ProxyType
+    delay: number
+}
+
+/**
+ * A proxy was executed correctly, with the given.
+ */
+export interface ProxyEvent_ProxyExecuted {
+    __kind: 'ProxyExecuted'
+    result: Result<null, DispatchError>
+}
+
+/**
+ * A proxy was removed.
+ */
+export interface ProxyEvent_ProxyRemoved {
+    __kind: 'ProxyRemoved'
+    delegator: AccountId32
+    delegatee: AccountId32
+    proxyType: ProxyType
+    delay: number
+}
+
+/**
+ * A pure account has been created by new proxy with given
+ * disambiguation index and proxy type.
+ */
+export interface ProxyEvent_PureCreated {
+    __kind: 'PureCreated'
+    pure: AccountId32
+    who: AccountId32
+    proxyType: ProxyType
+    disambiguationIndex: number
+}
+
+export type ProxyType = ProxyType_Any | ProxyType_Governance | ProxyType_NonTransfer | ProxyType_Staking
+
+export interface ProxyType_Any {
+    __kind: 'Any'
+}
+
+export interface ProxyType_Governance {
+    __kind: 'Governance'
+}
+
+export interface ProxyType_NonTransfer {
+    __kind: 'NonTransfer'
+}
+
+export interface ProxyType_Staking {
+    __kind: 'Staking'
 }
 
 /**
@@ -2116,6 +1596,17 @@ export interface ImOnlineEvent_SomeOffline {
     offline: [AccountId32, Exposure][]
 }
 
+export interface Exposure {
+    total: bigint
+    own: bigint
+    others: IndividualExposure[]
+}
+
+export interface IndividualExposure {
+    who: AccountId32
+    value: bigint
+}
+
 /**
  * The `Event` enum of this pallet
  */
@@ -2382,6 +1873,10 @@ export interface DataAvailabilityEvent_DataSubmitted {
     who: AccountId32
     dataHash: H256
 }
+
+export type BlockLengthColumns = number
+
+export type BlockLengthRows = number
 
 export type AppId = number
 
@@ -2658,13 +2153,30 @@ export interface BalanceStatus_Reserved {
     __kind: 'Reserved'
 }
 
+export type Type_105 = Type_105_ApplyExtrinsic | Type_105_Finalization | Type_105_Initialization
+
+export interface Type_105_ApplyExtrinsic {
+    __kind: 'ApplyExtrinsic'
+    value: number
+}
+
+export interface Type_105_Finalization {
+    __kind: 'Finalization'
+}
+
+export interface Type_105_Initialization {
+    __kind: 'Initialization'
+}
+
 export const EventRecord: sts.Type<EventRecord> = sts.struct(() => {
     return  {
-        phase: Type_98,
+        phase: Type_105,
         event: Event,
         topics: sts.array(() => H256),
     }
 })
+
+export const H256 = sts.bytes()
 
 export const Event: sts.Type<Event> = sts.closedEnum(() => {
     return  {
@@ -2684,9 +2196,11 @@ export const Event: sts.Type<Event> = sts.closedEnum(() => {
         NominationPools: NominationPoolsEvent,
         Offences: OffencesEvent,
         Preimage: PreimageEvent,
+        Proxy: ProxyEvent,
         Scheduler: SchedulerEvent,
         Session: SessionEvent,
         Staking: StakingEvent,
+        Succinct: SuccinctEvent,
         Sudo: SudoEvent,
         System: SystemEvent,
         TechnicalCommittee: TechnicalCommitteeEvent,
@@ -2715,6 +2229,8 @@ export const VoterListEvent: sts.Type<VoterListEvent> = sts.closedEnum(() => {
         }),
     }
 })
+
+export const AccountId32 = sts.bytes()
 
 /**
  * The `Event` enum of this pallet
@@ -3007,6 +2523,56 @@ export const SudoEvent: sts.Type<SudoEvent> = sts.closedEnum(() => {
 /**
  * The `Event` enum of this pallet
  */
+export const SuccinctEvent: sts.Type<SuccinctEvent> = sts.closedEnum(() => {
+    return  {
+        BroadcasterUpdate: sts.enumStruct({
+            old: H256,
+            new: H256,
+            domain: sts.number(),
+        }),
+        ConfigurationUpdated: sts.enumStruct({
+            slotsPerPeriod: sts.bigint(),
+            finalityThreshold: sts.number(),
+        }),
+        ExecutedMessage: sts.enumStruct({
+            from: H256,
+            to: H256,
+            messageId: sts.bigint(),
+            messageRoot: H256,
+        }),
+        HeaderUpdate: sts.enumStruct({
+            slot: sts.bigint(),
+            finalizationRoot: H256,
+            executionStateRoot: H256,
+        }),
+        MessageSubmitted: sts.enumStruct({
+            from: AccountId32,
+            to: H256,
+            messageType: MessageType,
+            destinationDomain: sts.number(),
+        }),
+        SourceChainFrozen: sts.enumStruct({
+            sourceChainId: sts.number(),
+            frozen: sts.boolean(),
+        }),
+        SyncCommitteeUpdate: sts.enumStruct({
+            period: sts.bigint(),
+            root: sts.bigint(),
+        }),
+        WhitelistedDomainsUpdated: sts.unit(),
+    }
+})
+
+export const MessageType: sts.Type<MessageType> = sts.closedEnum(() => {
+    return  {
+        ArbitraryMessage: sts.unit(),
+        FungibleToken: sts.unit(),
+    }
+})
+
+/**
+ * The `Event` enum of this pallet
+ */
 export const StakingEvent: sts.Type<StakingEvent> = sts.closedEnum(() => {
     return  {
         Bonded: sts.enumStruct({
@@ -3065,6 +2631,24 @@ export const StakingEvent: sts.Type<StakingEvent> = sts.closedEnum(() => {
     }
 })
 
+export const ValidatorPrefs: sts.Type<ValidatorPrefs> = sts.struct(() => {
+    return  {
+        commission: sts.number(),
+        blocked: sts.boolean(),
+    }
+})
+
+export const Perbill = sts.number()
+
+export const Forcing: sts.Type<Forcing> = sts.closedEnum(() => {
+    return  {
+        ForceAlways: sts.unit(),
+        ForceNew: sts.unit(),
+        ForceNone: sts.unit(),
+        NotForcing: sts.unit(),
+    }
+})
+
 /**
  * The `Event` enum of this pallet
  */
@@ -3106,6 +2690,49 @@ export const SchedulerEvent: sts.Type<SchedulerEvent> = sts.closedEnum(() => {
             when: sts.number(),
             index: sts.number(),
         }),
+    }
+})
+
+/**
+ * The `Event` enum of this pallet
+ */
+export const ProxyEvent: sts.Type<ProxyEvent> = sts.closedEnum(() => {
+    return  {
+        Announced: sts.enumStruct({
+            real: AccountId32,
+            proxy: AccountId32,
+            callHash: H256,
+        }),
+        ProxyAdded: sts.enumStruct({
+            delegator: AccountId32,
+            delegatee: AccountId32,
+            proxyType: ProxyType,
+            delay: sts.number(),
+        }),
+        ProxyExecuted: sts.enumStruct({
+            result: sts.result(() => sts.unit(), () => DispatchError),
+        }),
+        ProxyRemoved: sts.enumStruct({
+            delegator: AccountId32,
+            delegatee: AccountId32,
+            proxyType: ProxyType,
+            delay: sts.number(),
+        }),
+        PureCreated: sts.enumStruct({
+            pure: AccountId32,
+            who: AccountId32,
+            proxyType: ProxyType,
+            disambiguationIndex: sts.number(),
+        }),
+    }
+})
+
+export const ProxyType: sts.Type<ProxyType> = sts.closedEnum(() => {
+    return  {
+        Any: sts.unit(),
+        Governance: sts.unit(),
+        NonTransfer: sts.unit(),
+        Staking: sts.unit(),
     }
 })
 
@@ -3375,6 +3002,21 @@ export const ImOnlineEvent: sts.Type<ImOnlineEvent> = sts.closedEnum(() => {
     }
 })
 
+export const Exposure: sts.Type<Exposure> = sts.struct(() => {
+    return  {
+        total: sts.bigint(),
+        own: sts.bigint(),
+        others: sts.array(() => IndividualExposure),
+    }
+})
+
+export const IndividualExposure: sts.Type<IndividualExposure> = sts.struct(() => {
+    return  {
+        who: AccountId32,
+        value: sts.bigint(),
+    }
+})
+
 /**
  * The `Event` enum of this pallet
  */
@@ -3518,6 +3160,10 @@ export const DataAvailabilityEvent: sts.Type<DataAvailabilityEvent> = sts.closed
     }
 })
 
+export const BlockLengthColumns = sts.number()
+
+export const BlockLengthRows = sts.number()
+
 export const AppId = sts.number()
 
 export const BoundedVec = sts.bytes()
@@ -3654,100 +3300,10 @@ export const BalanceStatus: sts.Type<BalanceStatus> = sts.closedEnum(() => {
     }
 })
 
-export interface Digest {
-    logs: DigestItem[]
-}
-
-export type DigestItem = DigestItem_Consensus | DigestItem_Other | DigestItem_PreRuntime | DigestItem_RuntimeEnvironmentUpdated | DigestItem_Seal
-
-export interface DigestItem_Consensus {
-    __kind: 'Consensus'
-    value: [Bytes, Bytes]
-}
-
-export interface DigestItem_Other {
-    __kind: 'Other'
-    value: Bytes
-}
-
-export interface DigestItem_PreRuntime {
-    __kind: 'PreRuntime'
-    value: [Bytes, Bytes]
-}
-
-export interface DigestItem_RuntimeEnvironmentUpdated {
-    __kind: 'RuntimeEnvironmentUpdated'
-}
-
-export interface DigestItem_Seal {
-    __kind: 'Seal'
-    value: [Bytes, Bytes]
-}
-
-export const Digest: sts.Type<Digest> = sts.struct(() => {
+export const Type_105: sts.Type<Type_105> = sts.closedEnum(() => {
     return  {
-        logs: sts.array(() => DigestItem),
+        ApplyExtrinsic: sts.number(),
+        Finalization: sts.unit(),
+        Initialization: sts.unit(),
     }
 })
-
-export const DigestItem: sts.Type<DigestItem> = sts.closedEnum(() => {
-    return  {
-        Consensus: sts.tuple(() => [sts.bytes(), sts.bytes()]),
-        Other: sts.bytes(),
-        PreRuntime: sts.tuple(() => [sts.bytes(), sts.bytes()]),
-        RuntimeEnvironmentUpdated: sts.unit(),
-        Seal: sts.tuple(() => [sts.bytes(), sts.bytes()]),
-    }
-})
-
-export type H256 = Bytes
-
-export const H256 = sts.bytes()
-
-export interface ExtrinsicLen {
-    raw: number
-    padded: number
-}
-
-export const ExtrinsicLen: sts.Type<ExtrinsicLen> = sts.struct(() => {
-    return  {
-        raw: sts.number(),
-        padded: sts.number(),
-    }
-})
-
-export interface PerDispatchClass {
-    normal: Weight
-    operational: Weight
-    mandatory: Weight
-}
-
-export const PerDispatchClass: sts.Type<PerDispatchClass> = sts.struct(() => {
-    return  {
-        normal: Weight,
-        operational: Weight,
-        mandatory: Weight,
-    }
-})
-
-export type AccountId32 = Bytes
-
-export interface AccountInfo {
-    nonce: number
-    consumers: number
-    providers: number
-    sufficients: number
-    data: AccountData
-}
-
-export const AccountInfo: sts.Type<AccountInfo> = sts.struct(() => {
-    return  {
-        nonce: sts.number(),
-        consumers: sts.number(),
-        providers: sts.number(),
-        sufficients: sts.number(),
-        data: AccountData,
-    }
-})
-
-export const AccountId32 = sts.bytes()

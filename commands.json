@@ -47,12 +47,12 @@
     "process": {
       "description": "Load .env and start the squid processor",
       "deps": ["build", "migration:apply"],
-      "cmd": ["node", "--require=dotenv/config", "lib/main.js"]
+      "cmd": ["node", "--require=dotenv/config", "lib/processor.js"]
     },
     "process:prod": {
       "description": "Start the squid processor",
       "deps": ["migration:apply"],
-      "cmd": ["node", "lib/main.js"],
+      "cmd": ["node", "lib/processor.js"],
       "hidden": true
     },
     "serve": {
@@ -65,7 +65,7 @@
         "--dumb-cache", "in-memory",
         "--dumb-cache-ttl", "1000",
         "--dumb-cache-size", "100",
-        "--dumb-cache-max-age", "1000" ]
+        "--dumb-cache-max-age", "1000" ] 
     },
     "check-updates": {
       "cmd": ["npx", "--yes", "npm-check-updates", "--filter=/subsquid/", "--upgrade"],

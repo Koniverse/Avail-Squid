@@ -7,11 +7,25 @@ type Account @entity {
 
 type Transfer @entity {
   id: ID!
-  blockNumber: Int! @index
-  timestamp: DateTime! @index
   extrinsicHash: String @index
+  extrinsicIndex: Int
+  timestamp: DateTime! @index
   from: Account!
   to: Account!
   amount: BigInt! @index
-  fee: BigInt! # fee is calculated at the best effort and may be zero for some old extrinsics
+  currency: Currency
+  fee: BigInt!
+  currencyFee: Currency
+  signer: String!
+  signature: String
+  blockNumber: Int! @index
+  success: Boolean
 }
+
+type Currency @entity {
+  id: ID!
+  assetsID: Int
+  symbol: String!
+  decimals: Int! 
+}
+
