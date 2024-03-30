@@ -10,12 +10,16 @@ services:
     ports:
       - "${DB_PORT}:5432"
     volumes:
-     - ./data/db:/var/lib/postgresql/data
+     - avail-data:/var/lib/postgresql/data
     restart: unless-stopped
     
   app:
-    image: avail-squid:v1
+    build:
+      context: .
+      dockerfile: Dockerfile
     working_dir: /app
+    volumes:
+      - .:/app
     ports:
       - "3000:3000"
     command: ["sqd", "process"]
@@ -28,3 +32,6 @@ services:
       DB_PORT: 5432
     
     restart: unless-stopped
+
+volumes:
+  avail-data:
