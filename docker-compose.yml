@@ -10,21 +10,28 @@ services:
     ports:
       - "${DB_PORT}:5432"
     volumes:
-     - ./data/db:/var/lib/postgresql/data
+     - avail-data:/var/lib/postgresql/data
     restart: unless-stopped
     
-  # app:
-  #   image: avail-squid:v1
-  #   working_dir: /app
-  #   ports:
-  #     - "3000:3000"
-  #   command: ["sqd", "process"]
-  #   env_file:
-  #     - .env
-  #   depends_on: 
-  #     - db
-  #   environment:
-  #     DB_HOST: db
-  #     DB_PORT: 5432
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    command: ["sqd", "process"]
+    env_file:
+      - .env
+    depends_on: 
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
     
-  #   restart: unless-stopped
+    restart: unless-stopped
+
+volumes:
+  avail-data:
