@@ -76,7 +76,7 @@ export const processor = new SubstrateBatchProcessor()
     url: assertNotNull(process.env.RPC_ENDPOINT),
     rateLimit: 10,
   })
-  .setBlockRange({ from: 500452, to: 500452 })
+  .setBlockRange({ from: START_BLOCK })
   .addEvent({
     call: true,
     extrinsic: true,
