@@ -8,4 +8,3 @@ RUN npm ci
 EXPOSE 3000
 
 CMD ["sqd", "serve"]
-

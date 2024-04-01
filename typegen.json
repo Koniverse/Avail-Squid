@@ -3,12 +3,22 @@
   "specVersions": "https://v2.archive.subsquid.io/metadata/data-avail",
   "pallets": {
     "Balances": {
-      "events": [
-        "Transfer"
-      ],
-      "calls": [],
-      "storage": [],
-      "constants": []
+      "storage": true
+    },
+    "EVM": {
+      "storage": true
+    },
+    "EvmAccounts": {
+      "storage": true
+    },
+    "Identity": {
+      "storage": true
+    },
+    "Staking": {
+      "storage": true
+    },
+    "System": {
+      "storage": true
     }
   }
 }
