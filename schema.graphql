@@ -1,18 +1,24 @@
+type Account @entity {
+  address: String!
+  publicKey: String
+}
+
 type Transfer @entity {
   id: ID!
   action: String
   extrinsicHash: String
   extrinsicIndex: Int
   timestamp: DateTime! @index
-  from: String
-  to: String
-  currencyAmmount: CurrencyAmount
-  currencyFee: CurrencyFee
+  sender: Account
   signer: String!
   signature: String
   blockNumber: Int! @index
   success: Boolean
   params: String
+  from: Account
+  to: Account
+  amount: Amount
+  fee: Amount
 }
 
 
@@ -23,12 +29,28 @@ type StakingBond @entity {
   extrinsicIndex: Int
   timestamp: DateTime! @index
   blockNumber: Int! @index
-  sender: String
-  stash: String
-  currencyAmmount: CurrencyAmount
-  currencyFee: CurrencyFee
+  sender: Account
   params: String
   success: Boolean
+  fee: Amount
+  # event
+  amount: Amount
+  stash: Account
+}
+
+type StakingNominate @entity {
+  id: ID!
+  action: String
+  extrinsicHash: String
+  extrinsicIndex: Int
+  timestamp: DateTime! @index
+  blockNumber: Int! @index
+  fee: Amount
+  sender: Account
+  # call
+  targets: [Account]
+  success: Boolean
+  params: String
 }
 
 type StakingUnbond @entity {
@@ -38,12 +60,13 @@ type StakingUnbond @entity {
   extrinsicIndex: Int
   timestamp: DateTime! @index
   blockNumber: Int! @index
-  sender: String
-  stash: String
-  currencyAmmount: CurrencyAmount
-  currencyFee: CurrencyFee
+  sender: Account
   params: String
   success: Boolean
+  fee: Amount
+  # call
+  amount: Amount
+  stash: String
 }
 
 # Not have event staking.rebond, have event staking.bond
@@ -54,26 +77,12 @@ type StakingRebond @entity {
   extrinsicIndex: Int
   timestamp: DateTime! @index
   blockNumber: Int! @index
-  sender: String
+  sender: Account
   stash: String
-  currencyAmmount: CurrencyAmount
-  currencyFee: CurrencyFee
+  amount: Amount
+  fee: Amount
   params: String
   success: Boolean
-}
-
-type StakingNominate @entity {
-  id: ID!
-  action: String
-  extrinsicHash: String
-  extrinsicIndex: Int
-  timestamp: DateTime! @index
-  blockNumber: Int! @index
-  currencyFee: CurrencyFee
-  sender: String
-  targets: [String]
-  success: Boolean
-  params: String
 }
 
 type StakingChill @entity {
@@ -83,10 +92,11 @@ type StakingChill @entity {
   extrinsicIndex: Int
   timestamp: DateTime! @index
   blockNumber: Int! @index
-  currencyFee: CurrencyFee
-  sender: String
-  stash: String
+  fee: Amount
+  sender: Account
   success: Boolean
+  # event
+  stash: String
 }
 
 type StakingWithdraw @entity {
@@ -96,21 +106,16 @@ type StakingWithdraw @entity {
   extrinsicIndex: Int
   timestamp: DateTime! @index
   blockNumber: Int! @index
-  currencyAmmount: CurrencyAmount
-  currencyFee: CurrencyFee
-  sender: String
-  stash: String
+  fee: Amount
+  sender: Account
   success: Boolean
+  # event
+  stash: String
+  amount: Amount
 }
 
-type CurrencyAmount {
+type Amount {
   amount: BigInt
-  symbol: String!
-  decimal: Int!
-}
-
-type CurrencyFee {
-  fee: BigInt
   symbol: String!
   decimal: Int!
 }
