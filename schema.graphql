@@ -1,16 +1,16 @@
 type Account @entity {
-  address: String!
-  publicKey: String
+  id: ID!
+  address: String! @index
 }
 
 type Transfer @entity {
+  # Extrinsic
   id: ID!
   action: String
   extrinsicHash: String
   extrinsicIndex: Int
   timestamp: DateTime! @index
   sender: Account
-  signer: String!
   signature: String
   blockNumber: Int! @index
   success: Boolean
@@ -19,10 +19,12 @@ type Transfer @entity {
   to: Account
   amount: Amount
   fee: Amount
+  # ================
 }
 
 
-type StakingBond @entity {
+type NominationPoolJoin @entity {
+  # Extrinsic
   id: ID!
   action: String   
   extrinsicHash: String
@@ -30,15 +32,17 @@ type StakingBond @entity {
   timestamp: DateTime! @index
   blockNumber: Int! @index
   sender: Account
-  params: String
+  signature: String
   success: Boolean
+  params: String
   fee: Amount
-  # event
   amount: Amount
-  stash: Account
+  poolId: Int
+  # ================
 }
 
-type StakingNominate @entity {
+type NominationPoolBondExtra @entity {
+  # Extrinsic
   id: ID!
   action: String
   extrinsicHash: String
@@ -47,70 +51,75 @@ type StakingNominate @entity {
   blockNumber: Int! @index
   fee: Amount
   sender: Account
-  # call
-  targets: [Account]
+  signature: String
   success: Boolean
   params: String
-}
-
-type StakingUnbond @entity {
-  id: ID!
-  action: String
-  extrinsicHash: String
-  extrinsicIndex: Int
-  timestamp: DateTime! @index
-  blockNumber: Int! @index
-  sender: Account
-  params: String
-  success: Boolean
-  fee: Amount
-  # call
+  bondMethod: String   # Rewards or free balance
+  # ================
+  # event NominationPool(Bond)
   amount: Amount
-  stash: String
+  joined: Boolean
+  poolId: Int
+  from: Account
 }
 
-# Not have event staking.rebond, have event staking.bond
-type StakingRebond @entity {
+type NominationPoolUnbond @entity {
+  # Extrinsic
   id: ID!
-  action: String   
+  action: String
   extrinsicHash: String
   extrinsicIndex: Int
   timestamp: DateTime! @index
   blockNumber: Int! @index
   sender: Account
-  stash: String
-  amount: Amount
+  signature: String
+  success: Boolean
   fee: Amount
   params: String
-  success: Boolean
+  # ================
+  # event nominationpools (Unbonded)
+  poolId: Int
+  amount: Amount
+  era: BigInt
+  unbondingPoints: Amount
 }
 
-type StakingChill @entity {
-  id: ID!
+type NominationPoolPaidOut @entity {
+  # Extrinsic
+  id: ID!  # event.id
   action: String
   extrinsicHash: String
   extrinsicIndex: Int
   timestamp: DateTime! @index
   blockNumber: Int! @index
-  fee: Amount
-  sender: Account
+  signature: String
   success: Boolean
-  # event
-  stash: String
+  to: Account
+  # ================
+  # event nominationpools (PaidOut)
+  poolId: Int
+  amount: Amount
+  era: Int
 }
 
-type StakingWithdraw @entity {
-  id: ID!
+type NominationPoolWithdrawUnbonded @entity {
+  # Extrinsic
+  id: ID!  # event.id
   action: String
   extrinsicHash: String
   extrinsicIndex: Int
   timestamp: DateTime! @index
   blockNumber: Int! @index
-  fee: Amount
   sender: Account
+  signature: String
   success: Boolean
-  # event
-  stash: String
+  from: Account
+  fee: Amount
+  params: String
+  # ================
+  # event nominationpools (Withdrawn)
+  poolId: Int
+  withdrawnPoint: Amount
   amount: Amount
 }
 

@@ -5,10 +5,7 @@
     "Balances": {
       "storage": true
     },
-    "EVM": {
-      "storage": true
-    },
-    "EvmAccounts": {
+    "NominationPools": {
       "storage": true
     },
     "Identity": {

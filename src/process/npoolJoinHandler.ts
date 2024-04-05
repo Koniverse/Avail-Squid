@@ -1,11 +1,12 @@
 import { Event } from "@subsquid/substrate-processor";
-import { Transfer, Amount, Account } from "../model";
+import { Amount, NominationPoolJoin, Account } from "../model";
 import { Fields, ctx } from "../processor";
 import { DataRawAddress,  } from "../util/interfaces";
 import { hexToNativeAddress } from "../util/util";
 import importAccount from "./accountManager";
-export class TransferBalance {
-    transfersData: Map<string, Transfer> = new Map();
+
+export class NpoolJoinHandler {
+    npoolJoinData: Map<string, NominationPoolJoin> = new Map();
     async process(event: Event<Fields>){
         let addressHex = "";
         if (event.extrinsic?.signature?.address){
@@ -13,17 +14,8 @@ export class TransferBalance {
             importAccount(addressHex);
         }
 
-        if(event.args.from){
-            importAccount(event.args.from);
-        }
-
-        if(event.args.to){
-            importAccount(event.args.to);
-        }
-
-        let signature = event.extrinsic?.signature?.signature as {value: string};
         let amount = {
-            amount: event.args.amount,
+            amount: event.args.bonded,
             symbol: "AVL",
             decimal: 18,
         };
@@ -33,45 +25,38 @@ export class TransferBalance {
             symbol: "AVL",
             decimal: 18
         }
+        let signature = event.extrinsic?.signature?.signature as {value: string};
 
-        const idExist = await ctx.store.findOne(Transfer,
+        const idExist = await ctx.store.findOne(NominationPoolJoin,
             {
                 where: 
                 {id: event.id}
             });
+
         if(idExist == undefined){
-         this.transfersData.set(event.id, new Transfer({
+         this.npoolJoinData.set(event.id, new NominationPoolJoin({
             id: event.id,
             action: event.name,
             extrinsicHash: event.extrinsic!.hash,
             extrinsicIndex: event.extrinsicIndex || 0,
             timestamp: new Date(event.block.timestamp!),
-            from: await ctx.store.findOne(Account, {
-                where: {
-                    address: hexToNativeAddress(event.args.from)
-                }
-            }), 
-            to: await ctx.store.findOne(Account, {
-                where: {
-                    address: hexToNativeAddress(event.args.to)
-                }
-            }),
-            amount: new Amount(amount),
-            fee: new Amount(fee),
+            blockNumber: event.extrinsic!.block.height,
             sender: await ctx.store.findOne(Account, {
                 where: {
                     address: hexToNativeAddress(addressHex)
                 }
             }),
             signature: signature.value,
-            blockNumber: event.extrinsic!.block.height,
             success: event.extrinsic!.success,
             params: event.call!.args,
+            amount: new Amount(amount),
+            fee:new Amount(fee),
+            poolId: event.args.poolId
          }));
         }
     }
 
     async save(){
-        await ctx.store.insert([...this.transfersData.values()]);
+        await ctx.store.insert([...this.npoolJoinData.values()]);
     }
 }

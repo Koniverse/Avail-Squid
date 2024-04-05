@@ -335,6 +335,179 @@ export const Judgement: sts.Type<Judgement> = sts.closedEnum(() => {
     }
 })
 
+export type ClaimPermission = ClaimPermission_Permissioned | ClaimPermission_PermissionlessAll | ClaimPermission_PermissionlessCompound | ClaimPermission_PermissionlessWithdraw
+
+export interface ClaimPermission_Permissioned {
+    __kind: 'Permissioned'
+}
+
+export interface ClaimPermission_PermissionlessAll {
+    __kind: 'PermissionlessAll'
+}
+
+export interface ClaimPermission_PermissionlessCompound {
+    __kind: 'PermissionlessCompound'
+}
+
+export interface ClaimPermission_PermissionlessWithdraw {
+    __kind: 'PermissionlessWithdraw'
+}
+
+export const ClaimPermission: sts.Type<ClaimPermission> = sts.closedEnum(() => {
+    return  {
+        Permissioned: sts.unit(),
+        PermissionlessAll: sts.unit(),
+        PermissionlessCompound: sts.unit(),
+        PermissionlessWithdraw: sts.unit(),
+    }
+})
+
+export interface SubPools {
+    noEra: UnbondPool
+    withEra: [number, UnbondPool][]
+}
+
+export interface UnbondPool {
+    points: bigint
+    balance: bigint
+}
+
+export const SubPools: sts.Type<SubPools> = sts.struct(() => {
+    return  {
+        noEra: UnbondPool,
+        withEra: sts.array(() => sts.tuple(() => [sts.number(), UnbondPool])),
+    }
+})
+
+export const UnbondPool: sts.Type<UnbondPool> = sts.struct(() => {
+    return  {
+        points: sts.bigint(),
+        balance: sts.bigint(),
+    }
+})
+
+export interface RewardPool {
+    lastRecordedRewardCounter: FixedU128
+    lastRecordedTotalPayouts: bigint
+    totalRewardsClaimed: bigint
+    totalCommissionPending: bigint
+    totalCommissionClaimed: bigint
+}
+
+export type FixedU128 = bigint
+
+export const RewardPool: sts.Type<RewardPool> = sts.struct(() => {
+    return  {
+        lastRecordedRewardCounter: FixedU128,
+        lastRecordedTotalPayouts: sts.bigint(),
+        totalRewardsClaimed: sts.bigint(),
+        totalCommissionPending: sts.bigint(),
+        totalCommissionClaimed: sts.bigint(),
+    }
+})
+
+export const FixedU128 = sts.bigint()
+
+export interface BondedPoolInner {
+    commission: Commission
+    memberCounter: number
+    points: bigint
+    roles: PoolRoles
+    state: PoolState
+}
+
+export type PoolState = PoolState_Blocked | PoolState_Destroying | PoolState_Open
+
+export interface PoolState_Blocked {
+    __kind: 'Blocked'
+}
+
+export interface PoolState_Destroying {
+    __kind: 'Destroying'
+}
+
+export interface PoolState_Open {
+    __kind: 'Open'
+}
+
+export interface PoolRoles {
+    depositor: AccountId32
+    root?: (AccountId32 | undefined)
+    nominator?: (AccountId32 | undefined)
+    bouncer?: (AccountId32 | undefined)
+}
+
+export interface Commission {
+    current?: ([Perbill, AccountId32] | undefined)
+    max?: (Perbill | undefined)
+    changeRate?: (CommissionChangeRate | undefined)
+    throttleFrom?: (number | undefined)
+}
+
+export interface CommissionChangeRate {
+    maxIncrease: Perbill
+    minDelay: number
+}
+
+export const BondedPoolInner: sts.Type<BondedPoolInner> = sts.struct(() => {
+    return  {
+        commission: Commission,
+        memberCounter: sts.number(),
+        points: sts.bigint(),
+        roles: PoolRoles,
+        state: PoolState,
+    }
+})
+
+export const PoolState: sts.Type<PoolState> = sts.closedEnum(() => {
+    return  {
+        Blocked: sts.unit(),
+        Destroying: sts.unit(),
+        Open: sts.unit(),
+    }
+})
+
+export const PoolRoles: sts.Type<PoolRoles> = sts.struct(() => {
+    return  {
+        depositor: AccountId32,
+        root: sts.option(() => AccountId32),
+        nominator: sts.option(() => AccountId32),
+        bouncer: sts.option(() => AccountId32),
+    }
+})
+
+export const Commission: sts.Type<Commission> = sts.struct(() => {
+    return  {
+        current: sts.option(() => sts.tuple(() => [Perbill, AccountId32])),
+        max: sts.option(() => Perbill),
+        changeRate: sts.option(() => CommissionChangeRate),
+        throttleFrom: sts.option(() => sts.number()),
+    }
+})
+
+export const CommissionChangeRate: sts.Type<CommissionChangeRate> = sts.struct(() => {
+    return  {
+        maxIncrease: Perbill,
+        minDelay: sts.number(),
+    }
+})
+
+export interface PoolMember {
+    poolId: number
+    points: bigint
+    lastRecordedRewardCounter: FixedU128
+    unbondingEras: [number, bigint][]
+}
+
+export const PoolMember: sts.Type<PoolMember> = sts.struct(() => {
+    return  {
+        poolId: sts.number(),
+        points: sts.bigint(),
+        lastRecordedRewardCounter: FixedU128,
+        unbondingEras: sts.array(() => sts.tuple(() => [sts.number(), sts.bigint()])),
+    }
+})
+
 export type Percent = number
 
 export const Percent = sts.number()
@@ -1905,25 +2078,6 @@ export interface NominationPoolsEvent_Withdrawn {
     points: bigint
 }
 
-export type PoolState = PoolState_Blocked | PoolState_Destroying | PoolState_Open
-
-export interface PoolState_Blocked {
-    __kind: 'Blocked'
-}
-
-export interface PoolState_Destroying {
-    __kind: 'Destroying'
-}
-
-export interface PoolState_Open {
-    __kind: 'Open'
-}
-
-export interface CommissionChangeRate {
-    maxIncrease: Perbill
-    minDelay: number
-}
-
 /**
  * The `Event` enum of this pallet
  */
@@ -3212,21 +3366,6 @@ export const NominationPoolsEvent: sts.Type<NominationPoolsEvent> = sts.closedEn
             balance: sts.bigint(),
             points: sts.bigint(),
         }),
-    }
-})
-
-export const PoolState: sts.Type<PoolState> = sts.closedEnum(() => {
-    return  {
-        Blocked: sts.unit(),
-        Destroying: sts.unit(),
-        Open: sts.unit(),
-    }
-})
-
-export const CommissionChangeRate: sts.Type<CommissionChangeRate> = sts.struct(() => {
-    return  {
-        maxIncrease: Perbill,
-        minDelay: sts.number(),
     }
 })
 
