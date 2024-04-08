@@ -1,27 +1,27 @@
 import { Call } from "@subsquid/substrate-processor";
-import { StakingNominate, CurrencyFee } from "../model";
+import { StakingNominate, Amount, Account } from "../model";
 import { Fields, ctx } from "../processor";
 import { DataRawAddress,  } from "../util/interfaces";
 import { hexToNativeAddress } from "../util/util";
+import importAccount from "./accountManager";
 
 export class StakingNominateHandler {
     stakingNominateData: Map<string, StakingNominate> = new Map();
     async process(call: Call<Fields>){
-        let signer = "";
+        let addressHex = "";
         if (call.extrinsic?.signature?.address){
-            const addressHex = (call.extrinsic!.signature!.address as DataRawAddress).value;
-            signer = hexToNativeAddress(addressHex);
+            addressHex = (call.extrinsic!.signature!.address as DataRawAddress).value;
+            importAccount(addressHex);
         }
 
-        let currencyFee = {
-            fee: call.extrinsic!.fee || BigInt(0),
+        let fee = {
+            amount: call.extrinsic!.fee || BigInt(0),
             symbol: "AVL",
             decimal: 18
         }
-
         let targets = [];
         for (let i = 0; i < call.args.targets.length; i++) {
-            targets.push(hexToNativeAddress(call.args.targets[i].value));
+            targets.push(call.args.targets[i].value);
         }
 
         const idExist = await ctx.store.findOne(StakingNominate,
@@ -37,8 +37,12 @@ export class StakingNominateHandler {
             extrinsicIndex: call.extrinsicIndex || 0,
             timestamp: new Date(call.block.timestamp!),
             blockNumber: call.extrinsic!.block.height,
-            sender: signer,
-            currencyFee:new CurrencyFee(currencyFee),
+            sender: await ctx.store.findOne(Account, {
+                where: {
+                    address: hexToNativeAddress(addressHex)
+                }
+            }),
+            fee:new Amount(fee),
             success: call.extrinsic!.success,
             targets: targets,
             params: call.args

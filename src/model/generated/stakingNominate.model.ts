@@ -1,6 +1,7 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, ManyToOne as ManyToOne_} from "typeorm"
 import * as marshal from "./marshal"
-import {CurrencyFee} from "./_currencyFee"
+import {Amount} from "./_amount"
+import {Account} from "./account.model"
 
 @Entity_()
 export class StakingNominate {
@@ -28,11 +29,12 @@ export class StakingNominate {
     @Column_("int4", {nullable: false})
     blockNumber!: number
 
-    @Column_("jsonb", {transformer: {to: obj => obj == null ? undefined : obj.toJSON(), from: obj => obj == null ? undefined : new CurrencyFee(undefined, obj)}, nullable: true})
-    currencyFee!: CurrencyFee | undefined | null
+    @Column_("jsonb", {transformer: {to: obj => obj == null ? undefined : obj.toJSON(), from: obj => obj == null ? undefined : new Amount(undefined, obj)}, nullable: true})
+    fee!: Amount | undefined | null
 
-    @Column_("text", {nullable: true})
-    sender!: string | undefined | null
+    @Index_()
+    @ManyToOne_(() => Account, {nullable: true})
+    sender!: Account | undefined | null
 
     @Column_("text", {array: true, nullable: true})
     targets!: (string | undefined | null)[] | undefined | null

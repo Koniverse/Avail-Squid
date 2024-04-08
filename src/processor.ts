@@ -16,6 +16,7 @@ import { StakingRebondHandler } from "./process/stakingRebondHandler";
 import { StakingNominateHandler } from "./process/stakingNominateHandler";
 import { StakingChillHandler } from "./process/stakingChillHandler";
 import { StakingWithdrawHandler } from "./process/stakingWithdrawHandler";
+import { StakingRewardHandler } from "./process/stakingRewardHandler";
 
 export type Event = _Event<Fields>;
 export type Call = _Call<Fields>;
@@ -103,14 +104,17 @@ const processBatch = async (batch: Block<Fields>[]) => {
   const stakingChillHandler: StakingChillHandler = new StakingChillHandler();
   const stakingWithdrawHandler: StakingWithdrawHandler =
     new StakingWithdrawHandler();
+  const stakingRewardHandler: StakingRewardHandler = new StakingRewardHandler();
 
   if (batch.length > 1) ctx.log.debug(`Batch size: ${batch.length}`);
-
-  const eventMap: Record<string, boolean> = {};
 
   for (const block of batch) {
     ctx.log.debug(`Processing block ${block.header.height}`);
     for (const call of block.calls) {
+      if(call.name.startsWith("Staking")) {
+        console.table(call.name);
+      };
+
       if (call.name === "Balances.transfer") {
         for (const event of call.extrinsic?.events || []) {
             if (event.name === "Balances.Transfer") {
@@ -169,6 +173,14 @@ const processBatch = async (batch: Block<Fields>[]) => {
           }
         }
       }
+
+      if(call.name === "Staking.payout_stakers") {
+        for (const event of call.extrinsic?.events || []) {
+          if (event.name === "Staking.Rewarded") {
+            await stakingRewardHandler.process(event);
+          }
+        }
+      }
     }
   }
 
@@ -184,4 +196,5 @@ const processBatch = async (batch: Block<Fields>[]) => {
   await stakingNominateHandler.save();
   await stakingChillHandler.save();
   await stakingWithdrawHandler.save();
+  await stakingRewardHandler.save();
 };

@@ -1,7 +1,7 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_} from "typeorm"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, ManyToOne as ManyToOne_} from "typeorm"
 import * as marshal from "./marshal"
-import {CurrencyAmount} from "./_currencyAmount"
-import {CurrencyFee} from "./_currencyFee"
+import {Account} from "./account.model"
+import {Amount} from "./_amount"
 
 @Entity_()
 export class Transfer {
@@ -25,20 +25,9 @@ export class Transfer {
     @Column_("timestamp with time zone", {nullable: false})
     timestamp!: Date
 
-    @Column_("text", {nullable: true})
-    from!: string | undefined | null
-
-    @Column_("text", {nullable: true})
-    to!: string | undefined | null
-
-    @Column_("jsonb", {transformer: {to: obj => obj == null ? undefined : obj.toJSON(), from: obj => obj == null ? undefined : new CurrencyAmount(undefined, obj)}, nullable: true})
-    currencyAmmount!: CurrencyAmount | undefined | null
-
-    @Column_("jsonb", {transformer: {to: obj => obj == null ? undefined : obj.toJSON(), from: obj => obj == null ? undefined : new CurrencyFee(undefined, obj)}, nullable: true})
-    currencyFee!: CurrencyFee | undefined | null
-
-    @Column_("text", {nullable: false})
-    signer!: string
+    @Index_()
+    @ManyToOne_(() => Account, {nullable: true})
+    sender!: Account | undefined | null
 
     @Column_("text", {nullable: true})
     signature!: string | undefined | null
@@ -52,4 +41,18 @@ export class Transfer {
 
     @Column_("text", {nullable: true})
     params!: string | undefined | null
+
+    @Index_()
+    @ManyToOne_(() => Account, {nullable: true})
+    from!: Account | undefined | null
+
+    @Index_()
+    @ManyToOne_(() => Account, {nullable: true})
+    to!: Account | undefined | null
+
+    @Column_("jsonb", {transformer: {to: obj => obj == null ? undefined : obj.toJSON(), from: obj => obj == null ? undefined : new Amount(undefined, obj)}, nullable: true})
+    amount!: Amount | undefined | null
+
+    @Column_("jsonb", {transformer: {to: obj => obj == null ? undefined : obj.toJSON(), from: obj => obj == null ? undefined : new Amount(undefined, obj)}, nullable: true})
+    fee!: Amount | undefined | null
 }

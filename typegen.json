@@ -5,12 +5,6 @@
     "Balances": {
       "storage": true
     },
-    "EVM": {
-      "storage": true
-    },
-    "EvmAccounts": {
-      "storage": true
-    },
     "Identity": {
       "storage": true
     },
