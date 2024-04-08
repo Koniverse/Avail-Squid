@@ -49,6 +49,11 @@ export class StakingBondHandler {
             fee:new Amount(fee),
             success: event.extrinsic!.success,
             params: event.call!.args,
+            stash: await ctx.store.findOne(Account, {
+                where: {
+                    address: event.args.stash
+                }
+            })
          }));
         }
     }

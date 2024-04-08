@@ -5,9 +5,9 @@ import { DataRawAddress,  } from "../util/interfaces";
 import { hexToNativeAddress } from "../util/util";
 import importAccount from "./accountManager";
 
-export class StakingNominateHandler {
+export class StakingNominateUtilityHandler {
     stakingNominateData: Map<string, StakingNominate> = new Map();
-    async process(call: Call<Fields>){
+    async process(call: Call<Fields>, prop: any){
         let addressHex = "";
         if (call.extrinsic?.signature?.address){
             addressHex = (call.extrinsic!.signature!.address as DataRawAddress).value;
@@ -20,8 +20,8 @@ export class StakingNominateHandler {
             decimal: 18
         }
         let targets = [];
-        for (let i = 0; i < call.args.calls.value.targets.length; i++) {
-            targets.push(call.args.targets[i].value);
+        for (let i = 0; i < prop.value.targets.length; i++) {
+            targets.push(prop.value.targets[i].value);
         }
 
         const idExist = await ctx.store.findOne(StakingNominate,
@@ -32,7 +32,7 @@ export class StakingNominateHandler {
         if(idExist == undefined){
          this.stakingNominateData.set(call.id, new StakingNominate({
             id: call.id,
-            action: call.name,
+            action: "Staking.nominate",
             extrinsicHash: call.extrinsic!.hash,
             extrinsicIndex: call.extrinsicIndex || 0,
             timestamp: new Date(call.block.timestamp!),
