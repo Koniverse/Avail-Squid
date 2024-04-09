@@ -5,6 +5,9 @@
     "Balances": {
       "storage": true
     },
+    "NominationPools": {
+      "storage": true
+    },
     "Identity": {
       "storage": true
     },
