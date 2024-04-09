@@ -22,6 +22,7 @@ import { NpoolUnbondHandler } from "./process/npoolUnbondHandler";
 import { NpoolBondExtraHandler } from "./process/npoolBondExtraHandler";
 import { NpoolWithdrawUnbondHandler } from "./process/npoolWithdrawHandler";
 import { NpoolPaidOutHandler } from "./process/npoolPaidOutHandler";
+import { StakingNominateUtilityHandler } from "./process/stakingNominateUtilityHandler";
 
 export type Event = _Event<Fields>;
 export type Call = _Call<Fields>;
@@ -106,6 +107,7 @@ const processBatch = async (batch: Block<Fields>[]) => {
   const stakingRebondHandler: StakingRebondHandler = new StakingRebondHandler();
   const stakingNominateHandler: StakingNominateHandler =
     new StakingNominateHandler();
+  const stakingNominateUtilityHandler: StakingNominateUtilityHandler = new StakingNominateUtilityHandler();
   const stakingChillHandler: StakingChillHandler = new StakingChillHandler();
   const stakingWithdrawHandler: StakingWithdrawHandler =
     new StakingWithdrawHandler();
@@ -188,7 +190,74 @@ const processBatch = async (batch: Block<Fields>[]) => {
           }
         }
       }
-      };
+
+      if(call.name.startsWith("Utility")){
+        for(const prop of call.args.calls)
+        {
+          if(prop.value.__kind === 'bond'){
+            for(const event of call.extrinsic?.events || [])
+              {
+                if (event.name === "Staking.Bonded") {
+                  await stakingBondHandler.process(event);
+                  break;
+                }
+              }
+          }
+
+          if(prop.value.__kind === 'unbond'){
+              
+              for(const event of call.extrinsic?.events || [])
+              {
+                if (event.name === "Staking.Unbonded") {
+                  await stakingUnbondHandler.process(event);
+                  break;
+                }
+              }
+          }
+          
+          if(prop.value.__kind === 'rebond'){
+              for(const event of call.extrinsic?.events || [])
+              {
+                if (event.name === "Staking.Bonded") {
+                  await stakingRebondHandler.process(event);
+                  break;
+                }
+              }
+          }
+          if(prop.value.__kind === 'nominate'){
+                  await stakingNominateUtilityHandler.process(call, prop);
+                  break;
+          }
+          if(prop.value.__kind === 'chill'){
+              for(const event of call.extrinsic?.events || [])
+              {
+                if (event.name === "Staking.Chilled") {
+                  await stakingChillHandler.process(event);
+                  break;
+                }
+              }
+          }
+          if(prop.value.__kind === 'withdraw'){
+              for(const event of call.extrinsic?.events || [])
+              {
+                if (event.name === "Staking.Withdraw") {
+                  await stakingWithdrawHandler.process(event);
+                  break;
+                }
+              }
+          }
+
+          if(prop.value.__kind === 'reward'){
+              for(const event of call.extrinsic?.events || [])
+              {
+                if (event.name === "Staking.Reward") {
+                  await stakingRewardHandler.process(event);
+                  break;
+                }
+              }
+          }
+      }
+      }
 
       if(call.name.startsWith("NominationPools")) {
       if(call.name == "NominationPools.join") {
@@ -235,7 +304,7 @@ const processBatch = async (batch: Block<Fields>[]) => {
     }
   }
   }
-
+  }
   ctx.log.info(
     `Saving blocks from ${batch[0].header.height} to ${
       batch[batch.length - 1].header.height
@@ -245,7 +314,7 @@ const processBatch = async (batch: Block<Fields>[]) => {
   await stakingBondHandler.save();
   await stakingUnbondHandler.save();
   await stakingRebondHandler.save();
-  await stakingNominateHandler.save();
+  await stakingNominateUtilityHandler.save();
   await stakingChillHandler.save();
   await stakingWithdrawHandler.save();
   await stakingRewardHandler.save();
