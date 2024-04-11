@@ -104,8 +104,8 @@ const processBatch = async (batch: Block<Fields>[]) => {
       if (call.name === "Balances.transfer") {
         call.extrinsic?.events
           .filter((event) => event.name === "Balances.Transfer")
-          .forEach((event) => {
-            HandlerMap[event.name].process(event, accountInstance);
+          .forEach(async (event) => {
+            await HandlerMap[event.name].process(event, accountInstance);
           });
       }
 
@@ -113,52 +113,52 @@ const processBatch = async (batch: Block<Fields>[]) => {
         if (call.name === "Staking.bond") {
           call.extrinsic?.events
             .filter((event) => event.name === "Staking.Bonded")
-            .forEach((event) => {
-              HandlerMap[event.name].process(event, accountInstance);
+            .forEach(async (event) => {
+              await HandlerMap[event.name].process(event, accountInstance);
             });
         }
 
         if (call.name === "Staking.unbond") {
           call.extrinsic?.events
             .filter((event) => event.name === "Staking.Unbonded")
-            .forEach((event) => {
-              HandlerMap[event.name].process(event, accountInstance);
+            .forEach(async (event) => {
+              await HandlerMap[event.name].process(event, accountInstance);
             });
         }
 
         if (call.name === "Staking.rebond") {
           call.extrinsic?.events
             .filter((event) => event.name === "Staking.Bonded")
-            .forEach((event) => {
-              HandlerMap["Staking.Rebonded"].process(event, accountInstance);
+            .forEach(async (event) => {
+              await HandlerMap["Staking.Rebonded"].process(event, accountInstance);
             });
         }
 
         if (call.name === "Staking.nominate") {
-          HandlerMap["Staking.nominate"].process(call, accountInstance);
+          await HandlerMap["Staking.nominate"].process(call, accountInstance);
         }
 
         if (call.name === "Staking.chill") {
           call.extrinsic?.events
             .filter((event) => event.name === "Staking.Chilled")
-            .forEach((event) => {
-              HandlerMap[event.name].process(event, accountInstance);
+            .forEach( async (event) => {
+              await HandlerMap[event.name].process(event, accountInstance);
             });
         }
 
         if (call.name === "Staking.withdraw_unbonded") {
           call.extrinsic?.events
             .filter((event) => event.name === "Staking.Withdrawn")
-            .forEach((event) => {
-              HandlerMap[event.name].process(event, accountInstance);
+            .forEach(async (event) => {
+              await HandlerMap[event.name].process(event, accountInstance);
             });
         }
 
         if (call.name === "Staking.payout_stakers") {
           call.extrinsic?.events
             .filter((event) => event.name === "Staking.Rewarded")
-            .forEach((event) => {
-              HandlerMap[event.name].process(event, accountInstance);
+            .forEach(async (event) => {
+              await HandlerMap[event.name].process(event, accountInstance);
             });
         }
       }
@@ -175,20 +175,20 @@ const processBatch = async (batch: Block<Fields>[]) => {
           if (prop.value.__kind === "unbond") {
             call.extrinsic?.events
               .filter((event) => event.name === "Staking.Unbonded")
-              .forEach((event) => {
-                HandlerMap[event.name].process(event, accountInstance);
+              .forEach(async (event) => {
+                await HandlerMap[event.name].process(event, accountInstance);
               });
           }
 
           if (prop.value.__kind === "rebond") {
             call.extrinsic?.events
               .filter((event) => event.name === "Staking.Bonded")
-              .forEach((event) => {
-                HandlerMap["Staking.Rebonded"].process(event, accountInstance);
+              .forEach(async (event) => {
+                await HandlerMap["Staking.Rebonded"].process(event, accountInstance);
               });
           }
           if (prop.value.__kind === "nominate") {
-             HandlerMap["Staking.NominateUtility"].process(
+              await HandlerMap["Staking.NominateUtility"].process(
               call,
               accountInstance,
               prop
@@ -197,23 +197,23 @@ const processBatch = async (batch: Block<Fields>[]) => {
           if (prop.value.__kind === "chill") {
             call.extrinsic?.events
               .filter((event) => event.name === "Staking.Chilled")
-              .forEach((event) => {
-                HandlerMap[event.name].process(event, accountInstance);
+              .forEach(async (event) => {
+                await HandlerMap[event.name].process(event, accountInstance);
               });
           }
           if (prop.value.__kind === "withdraw") {
             call.extrinsic?.events
               .filter((event) => event.name === "Staking.Withdrawn")
-              .forEach((event) => {
-                HandlerMap[event.name].process(event, accountInstance);
+              .forEach(async (event) => {
+                await HandlerMap[event.name].process(event, accountInstance);
               });
           }
 
           if (prop.value.__kind === "reward") {
             call.extrinsic?.events
               .filter((event) => event.name === "Staking.Rewarded")
-              .forEach((event) => {
-                HandlerMap[event.name].process(event, accountInstance);
+              .forEach(async (event) => {
+                await HandlerMap[event.name].process(event, accountInstance);
               });
           }
         }
@@ -223,39 +223,39 @@ const processBatch = async (batch: Block<Fields>[]) => {
         if (call.name == "NominationPools.join") {
           call.extrinsic?.events
             .filter((event) => event.name === "NominationPools.Bonded")
-            .forEach((event) => {
-              HandlerMap[event.name].process(event, accountInstance);
+            .forEach(async (event) => {
+              await HandlerMap[event.name].process(event, accountInstance);
             });
         }
 
         if (call.name == "NominationPools.unbond") {
           call.extrinsic?.events
             .filter((event) => event.name === "NominationPools.Unbonded")
-            .forEach((event) => {
-              HandlerMap[event.name].process(event, accountInstance);
+            .forEach(async (event) => {
+              await HandlerMap[event.name].process(event, accountInstance);
             });
         }
 
         if (call.name == "NominationPools.bond_extra") {
           call.extrinsic?.events
             .filter((event) => event.name === "NominationPools.Bonded")
-            .forEach((event) => {
-              HandlerMap["Npool.BondExtra"].process(event, accountInstance);
+            .forEach(async (event) => {
+              await HandlerMap["Npool.BondExtra"].process(event, accountInstance);
             });
         }
 
         if (call.name == "NominationPools.withdraw_unbonded") {
           call.extrinsic?.events
             .filter((event) => event.name === "NominationPools.Withdrawn")
-            .forEach((event) => {
-              HandlerMap[event.name].process(event, accountInstance);
+            .forEach(async (event) => {
+              await HandlerMap[event.name].process(event, accountInstance);
             });
         }
 
         call.extrinsic?.events
           .filter((event) => event.name === "NominationPools.PaidOut")
-          .forEach((event) => {
-            HandlerMap[event.name].process(event, accountInstance);
+          .forEach(async (event) => {
+            await HandlerMap[event.name].process(event, accountInstance);
           });
       }
     }
