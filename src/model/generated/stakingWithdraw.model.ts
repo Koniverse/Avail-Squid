@@ -39,8 +39,9 @@ export class StakingWithdraw {
     @Column_("bool", {nullable: true})
     success!: boolean | undefined | null
 
-    @Column_("text", {nullable: true})
-    stash!: string | undefined | null
+    @Index_()
+    @ManyToOne_(() => Account, {nullable: true})
+    stash!: Account | undefined | null
 
     @Column_("jsonb", {transformer: {to: obj => obj == null ? undefined : obj.toJSON(), from: obj => obj == null ? undefined : new Amount(undefined, obj)}, nullable: true})
     amount!: Amount | undefined | null

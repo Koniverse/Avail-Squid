@@ -39,6 +39,7 @@ export class StakingChill {
     @Column_("bool", {nullable: true})
     success!: boolean | undefined | null
 
-    @Column_("text", {nullable: true})
-    stash!: string | undefined | null
+    @Index_()
+    @ManyToOne_(() => Account, {nullable: true})
+    stash!: Account | undefined | null
 }

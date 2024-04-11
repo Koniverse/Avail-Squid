@@ -2,17 +2,13 @@ import { Event } from "@subsquid/substrate-processor";
 import { StakingRebond, Amount, Account } from "../model";
 import { Fields, ctx } from "../processor";
 import { DataRawAddress,  } from "../util/interfaces";
-import { hexToNativeAddress } from "../util/util";
-import importAccount from "./accountManager";
+import { IHandler } from "../interfaces/interfaces";
+import { AccountQuerier } from "./accountHandler";
 
-export class StakingRebondHandler {
+export class StakingRebondHandler implements IHandler {
     stakingRebondData: Map<string, StakingRebond> = new Map();
-    async process(event: Event<Fields>){
-        let addressHex = "";
-        if (event.extrinsic?.signature?.address){
-            addressHex = (event.extrinsic!.signature!.address as DataRawAddress).value;
-            importAccount(addressHex);
-        }
+    async process(event: Event<Fields>, accountInstance: AccountQuerier){
+        let addressHex = (event.extrinsic!.signature!.address as DataRawAddress).value;
 
         let amount = {
             amount: event.args.amount || BigInt(0),
@@ -26,12 +22,9 @@ export class StakingRebondHandler {
             decimal: 18
         }
 
-        const idExist = await ctx.store.findOne(StakingRebond,
-            {
-                where: 
-                {id: event.id}
-            });
-        if(idExist == undefined){
+        const idExist = this.stakingRebondData.get(event.id);
+
+        if(!idExist){
          this.stakingRebondData.set(event.id, new StakingRebond({
             id: event.id,
             action: "Staking.Rebond",
@@ -39,12 +32,8 @@ export class StakingRebondHandler {
             extrinsicIndex: event.extrinsicIndex || 0,
             timestamp: new Date(event.block.timestamp!),
             blockNumber: event.extrinsic!.block.height,
-            sender: await ctx.store.findOne(Account, {
-                where: {
-                    address: hexToNativeAddress(addressHex)
-                }
-            }),
-            stash: hexToNativeAddress(event.args.stash),
+            sender: accountInstance.getAccountId(addressHex),
+            stash: accountInstance.getAccountId(event.args.stash),
             amount: new Amount(amount),
             fee:new Amount(fee),
             success: event.extrinsic!.success,
@@ -54,6 +43,6 @@ export class StakingRebondHandler {
     }
 
     async save(){
-        await ctx.store.insert([...this.stakingRebondData.values()]);
+        await ctx.store.save([...this.stakingRebondData.values()]);
     }
 }

@@ -22,7 +22,6 @@ type Transfer @entity {
   # ================
 }
 
-
 type StakingBond @entity {
   # Extrinsic
   id: ID!
@@ -32,15 +31,13 @@ type StakingBond @entity {
   timestamp: DateTime! @index
   blockNumber: Int! @index
   sender: Account
-  signature: String
-  success: Boolean
   params: String
+  success: Boolean
   fee: Amount
   # ================
   # event
   amount: Amount
-  poolId: Int
-  # ================
+  stash: Account
 }
 
 type StakingNominate @entity {
@@ -61,7 +58,6 @@ type StakingNominate @entity {
 }
 
 type StakingUnbond @entity {
-  # Extrinsic
   id: ID!
   action: String
   extrinsicHash: String
@@ -72,12 +68,9 @@ type StakingUnbond @entity {
   params: String
   success: Boolean
   fee: Amount
-  # ================
   # call
   amount: Amount
-  joined: Boolean
-  poolId: Int
-  from: Account
+  stash: Account
 }
 
 # Not have event staking.rebond, have event staking.bond
@@ -96,7 +89,7 @@ type StakingRebond @entity {
   era: Int
   # ================
   # event
-  stash: String
+  stash: Account
   amount: Amount
 }
 
@@ -108,11 +101,12 @@ type StakingChill @entity {
   extrinsicIndex: Int
   timestamp: DateTime! @index
   blockNumber: Int! @index
-  signature: String
+  fee: Amount
+  sender: Account
   success: Boolean
   # ================
   # event
-  stash: String
+  stash: Account
 }
 
 type StakingWithdraw @entity {
@@ -123,12 +117,12 @@ type StakingWithdraw @entity {
   extrinsicIndex: Int
   timestamp: DateTime! @index
   blockNumber: Int! @index
+  fee: Amount
   sender: Account
-  signature: String
   success: Boolean
   # ================
   # event
-  stash: String
+  stash: Account
   amount: Amount
 }
 

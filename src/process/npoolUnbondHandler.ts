@@ -2,17 +2,13 @@ import { Event } from "@subsquid/substrate-processor";
 import { Amount, NominationPoolUnbond, Account } from "../model";
 import { Fields, ctx } from "../processor";
 import { DataRawAddress,  } from "../util/interfaces";
-import { hexToNativeAddress } from "../util/util";
-import importAccount from "./accountManager";
+import { AccountQuerier } from "./accountHandler";
+import { IHandler } from "../interfaces/interfaces";
 
-export class NpoolUnbondHandler {
+export class NpoolUnbondHandler implements IHandler {
     npoolUnbondData: Map<string, NominationPoolUnbond> = new Map();
-    async process(event: Event<Fields>){
-        let addressHex = "";
-        if (event.extrinsic?.signature?.address){
-            addressHex = (event.extrinsic!.signature!.address as DataRawAddress).value;
-            importAccount(addressHex);
-        }
+    async process(event: Event<Fields>, accountInstance: AccountQuerier){
+        let addressHex = (event.extrinsic!.signature!.address as DataRawAddress).value;
 
         let amount = {
             amount: event.args.balance,
@@ -48,11 +44,7 @@ export class NpoolUnbondHandler {
             extrinsicIndex: event.extrinsicIndex || 0,
             timestamp: new Date(event.block.timestamp!),
             blockNumber: event.extrinsic!.block.height,
-            sender: await ctx.store.findOne(Account, {
-                where: {
-                    address: hexToNativeAddress(addressHex)
-                }
-            }),
+            sender: accountInstance.getAccountId(addressHex),
             signature: signature.value,
             success: event.extrinsic!.success,
             params: event.call!.args,
@@ -66,6 +58,6 @@ export class NpoolUnbondHandler {
     }
 
     async save(){
-        await ctx.store.insert([...this.npoolUnbondData.values()]);
+        await ctx.store.save([...this.npoolUnbondData.values()]);
     }
 }

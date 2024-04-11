@@ -2,17 +2,13 @@ import { Event } from "@subsquid/substrate-processor";
 import { Amount, NominationPoolJoin, Account } from "../model";
 import { Fields, ctx } from "../processor";
 import { DataRawAddress,  } from "../util/interfaces";
-import { hexToNativeAddress } from "../util/util";
-import importAccount from "./accountManager";
+import { AccountQuerier } from "./accountHandler";
+import { IHandler } from "../interfaces/interfaces";
 
-export class NpoolJoinHandler {
+export class NpoolJoinHandler implements IHandler {
     npoolJoinData: Map<string, NominationPoolJoin> = new Map();
-    async process(event: Event<Fields>){
-        let addressHex = "";
-        if (event.extrinsic?.signature?.address){
-            addressHex = (event.extrinsic!.signature!.address as DataRawAddress).value;
-            importAccount(addressHex);
-        }
+    async process(event: Event<Fields>, accountInstance: AccountQuerier){
+        let addressHex = (event.extrinsic!.signature!.address as DataRawAddress).value;
 
         let amount = {
             amount: event.args.bonded,
@@ -27,13 +23,9 @@ export class NpoolJoinHandler {
         }
         let signature = event.extrinsic?.signature?.signature as {value: string};
 
-        const idExist = await ctx.store.findOne(NominationPoolJoin,
-            {
-                where: 
-                {id: event.id}
-            });
+        const idExist = this.npoolJoinData.get(event.id);
 
-        if(idExist == undefined){
+        if(!idExist){
          this.npoolJoinData.set(event.id, new NominationPoolJoin({
             id: event.id,
             action: event.name,
@@ -41,11 +33,7 @@ export class NpoolJoinHandler {
             extrinsicIndex: event.extrinsicIndex || 0,
             timestamp: new Date(event.block.timestamp!),
             blockNumber: event.extrinsic!.block.height,
-            sender: await ctx.store.findOne(Account, {
-                where: {
-                    address: hexToNativeAddress(addressHex)
-                }
-            }),
+            sender: accountInstance.getAccountId(addressHex),
             signature: signature.value,
             success: event.extrinsic!.success,
             params: event.call!.args,
@@ -57,6 +45,6 @@ export class NpoolJoinHandler {
     }
 
     async save(){
-        await ctx.store.insert([...this.npoolJoinData.values()]);
+        await ctx.store.save([...this.npoolJoinData.values()]);
     }
 }

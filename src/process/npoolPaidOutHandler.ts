@@ -1,14 +1,13 @@
 import { Amount, NominationPoolPaidOut, Account } from "../model";
 import { Fields, ctx } from "../processor";
-import { hexToNativeAddress } from "../util/util";
-import importAccount from "./accountManager";
-import { balances, staking } from "../types/storage";
-
+import { staking } from "../types/storage";
 import { BlockHeader, Event } from "@subsquid/substrate-processor";
+import { AccountQuerier } from "./accountHandler";
+import { IHandler } from "../interfaces/interfaces";
 
-export class NpoolPaidOutHandler {
+export class NpoolPaidOutHandler implements IHandler {
     npoolPaidOutData: Map<string, NominationPoolPaidOut> = new Map();
-    async process(event: Event<Fields>){
+    async process(event: Event<Fields>, accountInstance: AccountQuerier){
         
         let amount = {
             amount: event.args.payout,
@@ -16,20 +15,12 @@ export class NpoolPaidOutHandler {
             decimal: 18,
         };
 
-        if(event.args.member){
-            importAccount(event.args.member);
-        }
-
         let currentEra = await this.getCurrentEra(event.block);
         let signature = event.extrinsic?.signature?.signature as {value: string};
 
-        const idExist = await ctx.store.findOne(NominationPoolPaidOut,
-            {
-                where: 
-                {id: event.id}
-            });
+        const idExist = this.npoolPaidOutData.get(event.id);
 
-        if(idExist == undefined){
+        if(!idExist){
          this.npoolPaidOutData.set(event.id, new NominationPoolPaidOut({
             id: event.id,
             action: event.name,
@@ -39,11 +30,7 @@ export class NpoolPaidOutHandler {
             blockNumber: event.extrinsic!.block.height,
             signature: signature.value,
             success: event.extrinsic!.success,
-            to: await ctx.store.findOne(Account, {
-                where: {
-                    address: hexToNativeAddress(event.args.member)
-                }
-            }),
+            to: accountInstance.getAccountId(event.args.member),
             amount: new Amount(amount),
             poolId: event.args.poolId,
             era: currentEra?.index,
@@ -52,7 +39,7 @@ export class NpoolPaidOutHandler {
     }
 
     async save(){
-        await ctx.store.insert([...this.npoolPaidOutData.values()]);
+        await ctx.store.save([...this.npoolPaidOutData.values()]);
     }
 
     private async getCurrentEra(blockHeader: BlockHeader<Fields>) {

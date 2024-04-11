@@ -1,15 +1,7 @@
-module.exports = class Data1712287192437 {
-    name = 'Data1712287192437'
+module.exports = class Data1712659258869 {
+    name = 'Data1712659258869'
 
     async up(db) {
-        await db.query(`CREATE TABLE "account" ("id" character varying NOT NULL, "address" text NOT NULL, CONSTRAINT "PK_54115ee388cdb6d86bb4bf5b2ea" PRIMARY KEY ("id"))`)
-        await db.query(`CREATE INDEX "IDX_83603c168bc00b20544539fbea" ON "account" ("address") `)
-        await db.query(`CREATE TABLE "transfer" ("id" character varying NOT NULL, "action" text, "extrinsic_hash" text, "extrinsic_index" integer, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "signature" text, "block_number" integer NOT NULL, "success" boolean, "params" text, "amount" jsonb, "fee" jsonb, "sender_id" character varying, "from_id" character varying, "to_id" character varying, CONSTRAINT "PK_fd9ddbdd49a17afcbe014401295" PRIMARY KEY ("id"))`)
-        await db.query(`CREATE INDEX "IDX_70ff8b624c3118ac3a4862d22c" ON "transfer" ("timestamp") `)
-        await db.query(`CREATE INDEX "IDX_d049c3b2e59a29d3dfc95bd739" ON "transfer" ("sender_id") `)
-        await db.query(`CREATE INDEX "IDX_d6624eacc30144ea97915fe846" ON "transfer" ("block_number") `)
-        await db.query(`CREATE INDEX "IDX_76bdfed1a7eb27c6d8ecbb7349" ON "transfer" ("from_id") `)
-        await db.query(`CREATE INDEX "IDX_0751309c66e97eac9ef1149362" ON "transfer" ("to_id") `)
         await db.query(`CREATE TABLE "nomination_pool_join" ("id" character varying NOT NULL, "action" text, "extrinsic_hash" text, "extrinsic_index" integer, "timestamp" TIMESTAMP WITH TIME ZONE NOT NULL, "block_number" integer NOT NULL, "signature" text, "success" boolean, "params" text, "fee" jsonb, "amount" jsonb, "pool_id" integer, "sender_id" character varying, CONSTRAINT "PK_1e82b2030ea74f0b4edda4e40da" PRIMARY KEY ("id"))`)
         await db.query(`CREATE INDEX "IDX_f092ae9ec8d091c0fa3a8ddf57" ON "nomination_pool_join" ("timestamp") `)
         await db.query(`CREATE INDEX "IDX_1f258fc58230a53c0c9c2ea19c" ON "nomination_pool_join" ("block_number") `)
@@ -32,9 +24,6 @@ module.exports = class Data1712287192437 {
         await db.query(`CREATE INDEX "IDX_3a28aefbbc311c50e83d6a7b38" ON "nomination_pool_withdraw_unbonded" ("block_number") `)
         await db.query(`CREATE INDEX "IDX_2c176b67605b392ef419a04f0e" ON "nomination_pool_withdraw_unbonded" ("sender_id") `)
         await db.query(`CREATE INDEX "IDX_925aa03e079a23f7aaab10ca4f" ON "nomination_pool_withdraw_unbonded" ("from_id") `)
-        await db.query(`ALTER TABLE "transfer" ADD CONSTRAINT "FK_d049c3b2e59a29d3dfc95bd7392" FOREIGN KEY ("sender_id") REFERENCES "account"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
-        await db.query(`ALTER TABLE "transfer" ADD CONSTRAINT "FK_76bdfed1a7eb27c6d8ecbb73496" FOREIGN KEY ("from_id") REFERENCES "account"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
-        await db.query(`ALTER TABLE "transfer" ADD CONSTRAINT "FK_0751309c66e97eac9ef11493623" FOREIGN KEY ("to_id") REFERENCES "account"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
         await db.query(`ALTER TABLE "nomination_pool_join" ADD CONSTRAINT "FK_112cab65b151b9652d4ed881c20" FOREIGN KEY ("sender_id") REFERENCES "account"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
         await db.query(`ALTER TABLE "nomination_pool_bond_extra" ADD CONSTRAINT "FK_c4e19397099618d793134f763b8" FOREIGN KEY ("sender_id") REFERENCES "account"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
         await db.query(`ALTER TABLE "nomination_pool_bond_extra" ADD CONSTRAINT "FK_cdb8bb5e14cbbfc7e4bae81339e" FOREIGN KEY ("from_id") REFERENCES "account"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
@@ -45,14 +34,6 @@ module.exports = class Data1712287192437 {
     }
 
     async down(db) {
-        await db.query(`DROP TABLE "account"`)
-        await db.query(`DROP INDEX "public"."IDX_83603c168bc00b20544539fbea"`)
-        await db.query(`DROP TABLE "transfer"`)
-        await db.query(`DROP INDEX "public"."IDX_70ff8b624c3118ac3a4862d22c"`)
-        await db.query(`DROP INDEX "public"."IDX_d049c3b2e59a29d3dfc95bd739"`)
-        await db.query(`DROP INDEX "public"."IDX_d6624eacc30144ea97915fe846"`)
-        await db.query(`DROP INDEX "public"."IDX_76bdfed1a7eb27c6d8ecbb7349"`)
-        await db.query(`DROP INDEX "public"."IDX_0751309c66e97eac9ef1149362"`)
         await db.query(`DROP TABLE "nomination_pool_join"`)
         await db.query(`DROP INDEX "public"."IDX_f092ae9ec8d091c0fa3a8ddf57"`)
         await db.query(`DROP INDEX "public"."IDX_1f258fc58230a53c0c9c2ea19c"`)
@@ -75,9 +56,6 @@ module.exports = class Data1712287192437 {
         await db.query(`DROP INDEX "public"."IDX_3a28aefbbc311c50e83d6a7b38"`)
         await db.query(`DROP INDEX "public"."IDX_2c176b67605b392ef419a04f0e"`)
         await db.query(`DROP INDEX "public"."IDX_925aa03e079a23f7aaab10ca4f"`)
-        await db.query(`ALTER TABLE "transfer" DROP CONSTRAINT "FK_d049c3b2e59a29d3dfc95bd7392"`)
-        await db.query(`ALTER TABLE "transfer" DROP CONSTRAINT "FK_76bdfed1a7eb27c6d8ecbb73496"`)
-        await db.query(`ALTER TABLE "transfer" DROP CONSTRAINT "FK_0751309c66e97eac9ef11493623"`)
         await db.query(`ALTER TABLE "nomination_pool_join" DROP CONSTRAINT "FK_112cab65b151b9652d4ed881c20"`)
         await db.query(`ALTER TABLE "nomination_pool_bond_extra" DROP CONSTRAINT "FK_c4e19397099618d793134f763b8"`)
         await db.query(`ALTER TABLE "nomination_pool_bond_extra" DROP CONSTRAINT "FK_cdb8bb5e14cbbfc7e4bae81339e"`)
