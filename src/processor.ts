@@ -62,8 +62,6 @@ const fields = {
     validator: true,
   },
 };
-console.log("EVENTS: ", Object.keys(HandlerMap));
-console.log("CALLS: ", (CallArr));
 
 export type Fields = typeof fields;
 export const processor = new SubstrateBatchProcessor()
@@ -79,7 +77,7 @@ export const processor = new SubstrateBatchProcessor()
     extrinsic: true,
   })
   .addEvent({
-    
+    name: Object.keys(HandlerMap)
   })
   .setFields(fields);
 
@@ -100,7 +98,6 @@ const processBatch = async (batch: Block<Fields>[]) => {
   for (const block of batch) {
     ctx.log.debug(`Processing block ${block.header.height}`);
     for (const call of block.calls) {
-      console.log("CALL:", call.name);
       if (call.name === "Balances.transfer") {
         call.extrinsic?.events
           .filter((event) => event.name === "Balances.Transfer")
@@ -162,62 +159,6 @@ const processBatch = async (batch: Block<Fields>[]) => {
             });
         }
       }
-      if (call.name.startsWith("Utility")) {
-        for (const prop of call.args.calls) {
-          if (prop.value.__kind === "bond") {
-            call.extrinsic?.events
-              .filter((event) => event.name === "Staking.Bonded")
-              .forEach(async (event) => {
-                await HandlerMap[event.name].process(event, accountInstance);
-              });
-          }
-
-          if (prop.value.__kind === "unbond") {
-            call.extrinsic?.events
-              .filter((event) => event.name === "Staking.Unbonded")
-              .forEach(async (event) => {
-                await HandlerMap[event.name].process(event, accountInstance);
-              });
-          }
-
-          if (prop.value.__kind === "rebond") {
-            call.extrinsic?.events
-              .filter((event) => event.name === "Staking.Bonded")
-              .forEach(async (event) => {
-                await HandlerMap["Staking.Rebonded"].process(event, accountInstance);
-              });
-          }
-          if (prop.value.__kind === "nominate") {
-              await HandlerMap["Staking.NominateUtility"].process(
-              call,
-              accountInstance,
-              prop
-            );
-          }
-          if (prop.value.__kind === "chill") {
-            call.extrinsic?.events
-              .filter((event) => event.name === "Staking.Chilled")
-              .forEach(async (event) => {
-                await HandlerMap[event.name].process(event, accountInstance);
-              });
-          }
-          if (prop.value.__kind === "withdraw") {
-            call.extrinsic?.events
-              .filter((event) => event.name === "Staking.Withdrawn")
-              .forEach(async (event) => {
-                await HandlerMap[event.name].process(event, accountInstance);
-              });
-          }
-
-          if (prop.value.__kind === "reward") {
-            call.extrinsic?.events
-              .filter((event) => event.name === "Staking.Rewarded")
-              .forEach(async (event) => {
-                await HandlerMap[event.name].process(event, accountInstance);
-              });
-          }
-        }
-      }
 
       if (call.name.startsWith("NominationPools")) {
         if (call.name == "NominationPools.join") {
@@ -268,7 +209,6 @@ const processBatch = async (batch: Block<Fields>[]) => {
 
   await accountInstance.stopRecord();
   for (let key of Object.keys(HandlerMap)) {
-    // console.log("saving", key);
     await HandlerMap[key].save();
   }
 };

@@ -11,7 +11,6 @@ import { NpoolUnbondHandler } from "../process/npoolUnbondHandler";
 import { NpoolBondExtraHandler } from "../process/npoolBondExtraHandler";
 import { NpoolWithdrawUnbondHandler } from "../process/npoolWithdrawHandler";
 import { NpoolPaidOutHandler } from "../process/npoolPaidOutHandler";
-import { StakingNominateUtilityHandler } from "../process/stakingNominateUtilityHandler";
 import { IHandler } from "../interfaces/interfaces";
 
 export const HandlerMap: Record<string, IHandler> = {
@@ -20,7 +19,6 @@ export const HandlerMap: Record<string, IHandler> = {
     "Staking.Unbonded": new StakingUnbondHandler(),
     "Staking.Rebonded": new StakingRebondHandler(),
     "Staking.nominate": new StakingNominateHandler(),
-    "Staking.NominateUtility": new StakingNominateUtilityHandler(),
     "Staking.Chilled": new StakingChillHandler(),
     "Staking.Withdrawn": new StakingWithdrawHandler(),
     "Staking.Rewarded": new StakingRewardHandler(),
@@ -40,7 +38,6 @@ export const CallArr = [
     "Staking.chill",
     "Staking.withdraw_unbonded",
     "Staking.payout_stakers",
-    "Utility.batch_all",
     "NominationPools.join",
     "NominationPools.unbond",
     "NominationPools.bond_extra",

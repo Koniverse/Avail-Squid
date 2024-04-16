@@ -31,9 +31,7 @@ export class AccountQuerier {
       accounts.push(new Account({id: id, address: hexToNativeAddress(id)}));
     })
 
-    console.time('insert-account')
   await ctx.store.upsert(accounts);
-  console.timeEnd('insert-account')
 
   }
   
