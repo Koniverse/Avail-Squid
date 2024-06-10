@@ -3,8 +3,9 @@ version: "3.7"
 services:
   db:
     image: postgres:15
+    container_name: postgres
     environment:
-      POSTGRES_DB: squid_avail
+      POSTGRES_DB: squid_avail_turing
       POSTGRES_PASSWORD: postgres
     shm_size: 1gb
     ports:
@@ -13,25 +14,24 @@ services:
      - avail-data:/var/lib/postgresql/data
     restart: unless-stopped
     
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   working_dir: /app
-  #   volumes:
-  #     - .:/app
-  #   ports:
-  #     - "3000:3000"
-  #   command: ["sqd", "process"]
-  #   env_file:
-  #     - .env
-  #   depends_on: 
-  #     - db
-  #   environment:
-  #     DB_HOST: db
-  #     DB_PORT: 5432
-    
-  #   restart: unless-stopped
-
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    container_name: avail-squid
+    volumes:
+      - .:/app
+    ports:
+      - "3001:3000"
+    command: ["sqd", "process"]
+    env_file:
+      - .env
+    depends_on: 
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+    restart: unless-stopped
 volumes:
   avail-data:

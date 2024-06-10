@@ -65,7 +65,6 @@ const fields = {
 
 export type Fields = typeof fields;
 export const processor = new SubstrateBatchProcessor()
-  .setGateway(lookupArchive(ARCHIVE, { release: "ArrowSquid" }))
   .setRpcEndpoint({
     url: assertNotNull(process.env.RPC_ENDPOINT),
     rateLimit: 10,
@@ -76,14 +75,10 @@ export const processor = new SubstrateBatchProcessor()
     events: true,
     extrinsic: true,
   })
-  .addEvent({
-    name: Object.keys(HandlerMap)
-  })
   .setFields(fields);
 
 export let ctx: DataHandlerContext<Store, Fields>;
 const accountInstance = AccountQuerier.getInstance();
-
 processor.run(database, async (ctx_) => {
   ctx = ctx_;
   for (let i = 0; i < ctx.blocks.length; i += BATCH_SIZE) {
@@ -95,6 +90,7 @@ processor.run(database, async (ctx_) => {
 const processBatch = async (batch: Block<Fields>[]) => {
   if (batch.length > 1) ctx.log.debug(`Batch size: ${batch.length}`);
   accountInstance.startRecord();
+
   for (const block of batch) {
     ctx.log.debug(`Processing block ${block.header.height}`);
     for (const call of block.calls) {
@@ -199,6 +195,19 @@ const processBatch = async (batch: Block<Fields>[]) => {
             await HandlerMap[event.name].process(event, accountInstance);
           });
       }
+
+      if (call.name === "System.remark") {
+        await HandlerMap["System.remark"].process(call, accountInstance);
+      }
+
+      if (call.name === "System.remark_with_event") {
+        await HandlerMap["System.remark_with_event"].process(call, accountInstance);
+      }
+
+      if (call.name === "DataAvailability.submit_data") {
+        await HandlerMap["DataAvailability.submit_data"].process(call, accountInstance);
+      }
+
     }
   }
   ctx.log.info(
