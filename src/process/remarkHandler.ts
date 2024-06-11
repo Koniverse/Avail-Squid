@@ -27,7 +27,8 @@ export class RemarkHandler implements IHandler {
             blockNumber: call.extrinsic!.block.height,
             sender: accountInstance.getAccountId(addressHex),
             fee:new Amount(fee),
-            rawValue: call.args.remark,
+            dataRaw: call.args.remark,
+            dataValue: call.args.remark,
          }));
         }
     }

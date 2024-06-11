@@ -259,7 +259,8 @@ type Remark @entity {
   blockNumber: Int! @index
   sender: Account
   fee: Amount
-  rawValue: String
+  dataRaw: String
+  dataValue: String
 }
 
 type DataAvailability @entity {
@@ -270,6 +271,7 @@ type DataAvailability @entity {
   blockNumber: Int! @index
   sender: Account
   fee: Amount
-  rawValue: String
+  dataRaw: String
+  dataValue: String
   isJson: Boolean
 }

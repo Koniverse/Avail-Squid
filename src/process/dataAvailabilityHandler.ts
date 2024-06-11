@@ -16,9 +16,8 @@ export class DataAvailabilityHandler implements IHandler {
             symbol: "AVL",
             decimal: 18
         }
-        
         const idExist = this.availabilityData.get(call.id);
-        
+        const dataValue = decodeData(call.args.data);
         if(!idExist){
          this.availabilityData.set(call.id, new DataAvailability({
             id: call.id,
@@ -28,8 +27,9 @@ export class DataAvailabilityHandler implements IHandler {
             blockNumber: call.extrinsic!.block.height,
             sender: accountInstance.getAccountId(addressHex),
             fee: new Amount(fee),
-            rawValue: await decodeData(call.args.data),
-            isJson: await isJson(call.args) ? true : false
+            dataRaw: call.args.data,
+            dataValue: dataValue,
+            isJson: isJson(dataValue) ? true : false
          }));
         }
     }
@@ -52,11 +52,18 @@ function decodeData(str:string):string {
     let strInput = str.slice(2, str.length);
     const bytesData:Buffer = Buffer.from(strInput, 'hex');
     let res = bytesData.toString().replace(/<Buffer |>/g, '');
-    if(isValidHexString(res)) return res;
+    if (isValidHexString(res)) return res;
+    else if (isJson(res)) return res;
+    else if (isValidString(res)) return res;
     else return str;
 }
 
 function isValidHexString(str:string):boolean {
     const hexRegex = /^0x[0-9A-Fa-f]+$/;
     return hexRegex.test(str);
+}
+
+function isValidString(str: string): boolean {
+    const regex = /^[\x20-\x7E]*$/;
+    return regex.test(str);
 }

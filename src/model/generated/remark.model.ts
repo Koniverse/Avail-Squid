@@ -34,5 +34,8 @@ export class Remark {
     fee!: Amount | undefined | null
 
     @Column_("text", {nullable: true})
-    rawValue!: string | undefined | null
+    dataRaw!: string | undefined | null
+
+    @Column_("text", {nullable: true})
+    dataValue!: string | undefined | null
 }

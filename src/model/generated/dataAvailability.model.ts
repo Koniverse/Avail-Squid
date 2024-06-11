@@ -34,7 +34,10 @@ export class DataAvailability {
     fee!: Amount | undefined | null
 
     @Column_("text", {nullable: true})
-    rawValue!: string | undefined | null
+    dataRaw!: string | undefined | null
+
+    @Column_("text", {nullable: true})
+    dataValue!: string | undefined | null
 
     @Column_("bool", {nullable: true})
     isJson!: boolean | undefined | null
