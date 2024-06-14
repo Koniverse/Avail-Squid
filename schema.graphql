@@ -250,3 +250,28 @@ type Amount {
   symbol: String!
   decimal: Int!
 }
+
+type Remark @entity {
+  id: ID!
+  action: String
+  extrinsicHash: String
+  timestamp: DateTime! @index
+  blockNumber: Int! @index
+  sender: Account
+  fee: Amount
+  dataRaw: String
+  dataValue: String
+}
+
+type DataAvailability @entity {
+  id: ID!
+  action: String
+  extrinsicHash: String
+  timestamp: DateTime! @index
+  blockNumber: Int! @index
+  sender: Account
+  fee: Amount
+  dataRaw: String
+  dataValue: String
+  isJson: Boolean
+}

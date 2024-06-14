@@ -11,6 +11,8 @@ import { NpoolUnbondHandler } from "../process/npoolUnbondHandler";
 import { NpoolBondExtraHandler } from "../process/npoolBondExtraHandler";
 import { NpoolWithdrawUnbondHandler } from "../process/npoolWithdrawHandler";
 import { NpoolPaidOutHandler } from "../process/npoolPaidOutHandler";
+import { RemarkHandler } from "../process/remarkHandler";
+import { DataAvailabilityHandler } from "../process/dataAvailabilityHandler";
 import { IHandler } from "../interfaces/interfaces";
 
 export const HandlerMap: Record<string, IHandler> = {
@@ -26,7 +28,10 @@ export const HandlerMap: Record<string, IHandler> = {
     "NominationPools.Unbonded": new NpoolUnbondHandler(),
     "Npool.BondExtra": new NpoolBondExtraHandler(),
     "NominationPools.Withdrawn": new NpoolWithdrawUnbondHandler(),
-    "NominationPools.PaidOut": new NpoolPaidOutHandler()
+    "NominationPools.PaidOut": new NpoolPaidOutHandler(),
+    "System.remark": new RemarkHandler(),
+    "System.remark_with_event": new RemarkHandler(),
+    "DataAvailability.submit_data": new DataAvailabilityHandler()
 };
 
 export const CallArr = [
@@ -42,4 +47,7 @@ export const CallArr = [
     "NominationPools.unbond",
     "NominationPools.bond_extra",
     "NominationPools.withdraw_unbonded",
+    "System.remark",
+    "System.remark_with_event",
+    "DataAvailability.submit_data"
 ]
