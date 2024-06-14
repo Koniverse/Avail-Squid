@@ -41,8 +41,8 @@ export class DataAvailabilityHandler implements IHandler {
 
 function isJson(str:string):boolean {
     try {
-        JSON.parse(str);
-        return true;
+        const parsed = JSON.parse(str);
+        return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed);
     } catch (error) {
         return false;
     }
