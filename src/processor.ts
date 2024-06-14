@@ -75,6 +75,9 @@ export const processor = new SubstrateBatchProcessor()
     events: true,
     extrinsic: true,
   })
+  .addEvent({
+    name: Object.keys(HandlerMap)
+  })
   .setFields(fields);
 
 export let ctx: DataHandlerContext<Store, Fields>;

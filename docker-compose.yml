@@ -1,9 +1,15 @@
-version: "3.7"
+version: "3.8"
+
+networks:
+  avail_network:
+    driver: bridge
 
 services:
   db:
     image: postgres:15
     container_name: postgres
+    networks:
+      - avail_network
     environment:
       POSTGRES_DB: squid_avail_turing
       POSTGRES_PASSWORD: postgres
@@ -20,6 +26,8 @@ services:
       dockerfile: Dockerfile
     working_dir: /app
     container_name: avail-squid
+    networks:
+      - avail_network
     volumes:
       - .:/app
     ports:
