@@ -1,23 +1,24 @@
 version: "3.8"
 
 networks:
-  avail_network:
-    driver: bridge
-
+  avail_mainnet_network:
 services:
   db:
     image: postgres:15
-    container_name: postgres
     networks:
-      - avail_network
+      - avail_mainnet_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "3"
     environment:
-      POSTGRES_DB: squid_avail_turing
+      POSTGRES_DB: avail_mainnet
       POSTGRES_PASSWORD: postgres
-    shm_size: 1gb
     ports:
       - "${DB_PORT}:5432"
     volumes:
-     - avail-data:/var/lib/postgresql/data
+     - /mnt/avail-indexer-mainnet/data/:/var/lib/postgresql/data
     restart: unless-stopped
     
   app:
@@ -25,9 +26,13 @@ services:
       context: .
       dockerfile: Dockerfile
     working_dir: /app
-    container_name: avail-squid
     networks:
-      - avail_network
+      - avail_mainnet_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+        max-file: "3"
     volumes:
       - .:/app
     ports:
@@ -41,5 +46,4 @@ services:
       DB_HOST: db
       DB_PORT: 5432
     restart: unless-stopped
-volumes:
-  avail-data:
+

@@ -11,6 +11,7 @@ import {
 } from "@subsquid/substrate-processor";
 import { AccountQuerier } from "./process/accountHandler";
 import { CallArr, HandlerMap } from "./constants/handler";
+import { string } from "./model/generated/marshal";
 
 export type Event = _Event<Fields>;
 export type Call = _Call<Fields>;
@@ -79,18 +80,22 @@ export const processor = new SubstrateBatchProcessor()
     name: Object.keys(HandlerMap)
   })
   .setFields(fields);
-
 export let ctx: DataHandlerContext<Store, Fields>;
 const accountInstance = AccountQuerier.getInstance();
+
 processor.run(database, async (ctx_) => {
+
   ctx = ctx_;
+
   for (let i = 0; i < ctx.blocks.length; i += BATCH_SIZE) {
+
     const batch = ctx.blocks.slice(i, i + BATCH_SIZE);
     await processBatch(batch);
   }
 });
 
 const processBatch = async (batch: Block<Fields>[]) => {
+
   if (batch.length > 1) ctx.log.debug(`Batch size: ${batch.length}`);
   accountInstance.startRecord();
 
